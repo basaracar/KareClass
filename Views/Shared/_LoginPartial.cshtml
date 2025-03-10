@@ -14,7 +14,7 @@
     catch {}
     
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index" title="Profil">Merhaba @(user?.FirstName ?? "Kullanıcı")!</a>
+        <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index" title="Profil"> @(user?.FirstName ?? "Kullanıcı")!</a>
     </li>
     <li class="nav-item">
         <form class="form-inline" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

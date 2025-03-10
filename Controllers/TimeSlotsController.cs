@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KareClass.Data;
 using KareClass.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KareClass.Controllers;
 
+//[Authorize(Roles = "Admin")]
 public class TimeSlotsController : Controller
 {
     private readonly ApplicationDbContext _context;

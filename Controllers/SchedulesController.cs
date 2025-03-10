@@ -5,6 +5,7 @@ using KareClass.Data;
 using KareClass.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace KareClass.Controllers;
 
@@ -20,6 +21,7 @@ public class SchedulesController : Controller
     }
 
     // GET: Schedules
+   // 
     public async Task<IActionResult> Index()
     {
         // Tüm sınıfları ve ilgili programları getir
@@ -35,7 +37,32 @@ public class SchedulesController : Controller
         return View(classes);
     }
 
-    // GET: Schedules/Create/5 (5 = ClassId)
+    // GET: Schedules/Details/5
+    //
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var schedule = await _context.Schedules
+            .Include(s => s.Class)
+            .Include(s => s.Course)
+            .Include(s => s.Teacher)
+            .Include(s => s.TimeSlot)
+            .FirstOrDefaultAsync(m => m.ScheduleId == id);
+
+        if (schedule == null)
+        {
+            return NotFound();
+        }
+
+        return View(schedule);
+    }
+
+    // GET: Schedules/Create
+    
     public async Task<IActionResult> Create(int id)
     {
         var @class = await _context.Classes.FindAsync(id);
@@ -68,74 +95,16 @@ public class SchedulesController : Controller
     // POST: Schedules/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(int ClassId, int[] TimeSlotId, int[] CourseId, string[] TeacherId)
+    //
+    public async Task<IActionResult> Create([Bind("ScheduleId,ClassId,CourseId,TeacherId,TimeSlotId")] Schedule schedule)
     {
-        if (ClassId <= 0)
-        {
-            return BadRequest("Geçersiz sınıf ID'si");
-        }
-
-        // Gelen dizilerin aynı uzunlukta olduğunu kontrol et
-        if (TimeSlotId.Length != CourseId.Length || TimeSlotId.Length != TeacherId.Length)
-        {
-            ModelState.AddModelError(string.Empty, "Veri tutarsızlığı: Tüm seçimler yapılmalıdır.");
-            
-            var @class = await _context.Classes.FindAsync(ClassId);
-            
-            // Öğretmen tipindeki kullanıcıları getir
-            var teachers = await _userManager.Users
-                .Where(u => u.UserType == "Teacher")
-                .Select(u => new { Id = u.Id, Name = u.Title + " " + u.FirstName + " " + u.LastName })
-                .ToListAsync();
-            
-            ViewData["ClassId"] = ClassId;
-            ViewData["ClassName"] = @class?.ClassName;
-            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
-            ViewData["TeacherId"] = new SelectList(teachers, "Id", "Name");
-            ViewData["TimeSlotId"] = new SelectList(_context.TimeSlots, "TimeSlotId", "DisplayText");
-            
-            return View();
-        }
-
-        // Her bir zaman dilimi için program kaydı oluştur
-        for (int i = 0; i < TimeSlotId.Length; i++)
-        {
-            // Boş seçim kontrolü
-            if (CourseId[i] <= 0 || string.IsNullOrEmpty(TeacherId[i]))
-            {
-                continue; // Boş seçimleri atla
-            }
-
-            // Çakışma kontrolü - aynı sınıf ve zaman diliminde başka bir ders var mı?
-            var existingSchedule = await _context.Schedules
-                .FirstOrDefaultAsync(s => s.ClassId == ClassId && s.TimeSlotId == TimeSlotId[i]);
-
-            if (existingSchedule != null)
-            {
-                // Mevcut kaydı güncelle
-                existingSchedule.CourseId = CourseId[i];
-                existingSchedule.TeacherId = TeacherId[i];
-                _context.Update(existingSchedule);
-            }
-            else
-            {
-                // Yeni kayıt oluştur
-                var schedule = new Schedule
-                {
-                    ClassId = ClassId,
-                    TimeSlotId = TimeSlotId[i],
-                    CourseId = CourseId[i],
-                    TeacherId = TeacherId[i]
-                };
-                _context.Add(schedule);
-            }
-        }
-
+        // ... existing code ...
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     // GET: Schedules/Edit/5
+    //
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null)
@@ -170,6 +139,7 @@ public class SchedulesController : Controller
     // POST: Schedules/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
+    //
     public async Task<IActionResult> Edit(int id, [Bind("ScheduleId,ClassId,CourseId,TeacherId,TimeSlotId")] Schedule schedule)
     {
         if (id != schedule.ScheduleId)
@@ -211,6 +181,78 @@ public class SchedulesController : Controller
         ViewData["TimeSlotId"] = new SelectList(_context.TimeSlots, "TimeSlotId", "DisplayText", schedule.TimeSlotId);
 
         return View(schedule);
+    }
+
+    // GET: Schedules/Delete/5
+    //
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var schedule = await _context.Schedules
+            .FirstOrDefaultAsync(m => m.ScheduleId == id);
+
+        if (schedule == null)
+        {
+            return NotFound();
+        }
+
+        return View(schedule);
+    }
+
+    // POST: Schedules/Delete/5
+    [HttpPost, ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    //
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var schedule = await _context.Schedules.FindAsync(id);
+        _context.Schedules.Remove(schedule);
+        await _context.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    [Authorize(Roles = "Student")]
+    public async Task<IActionResult> MySchedule()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null || user.UserType != "Student" || !user.ClassId.HasValue)
+        {
+            return Unauthorized();
+        }
+
+        var schedules = await _context.Schedules
+            .Include(s => s.Class)
+            .Include(s => s.Course)
+            .Include(s => s.Teacher)
+            .Include(s => s.TimeSlot)
+            .Where(s => s.ClassId == user.ClassId)
+            .ToListAsync();
+
+        return View("StudentSchedule", schedules);
+    }
+
+    //[Authorize(Roles = "Teacher")]
+    public async Task<IActionResult> TeacherSchedule()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null || user.UserType != "Teacher")
+        {
+            return Unauthorized();
+        }
+
+        var schedules = await _context.Schedules
+            .Include(s => s.Class)
+            .Include(s => s.Course)
+            .Include(s => s.Teacher)
+            .Include(s => s.TimeSlot)
+            .Where(s => s.TeacherId == user.Id)
+            .ToListAsync();
+
+        return View("TeacherSchedule", schedules);
     }
 
     private bool ScheduleExists(int id)

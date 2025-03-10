@@ -23,18 +23,50 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Dersler</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Classes" asp-action="Index">Sınıflar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="TimeSlots" asp-action="Index">Zaman Dilimleri</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Schedules" asp-action="Index">Ders Programları</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @using Microsoft.AspNetCore.Identity
+                            @using KareClass.Models
+                            @inject UserManager<ApplicationUser> UserManager
+                            {
+                                var user = await UserManager.GetUserAsync(User);
+                                
+                                @if (user != null && user.UserType == "Admin")
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Dersler</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Classes" asp-action="Index">Sınıflar</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="TimeSlots" asp-action="Index">Zaman Dilimleri</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Schedules" asp-action="Index">Ders Programları</a>
+                                    </li>
+                                }
+                                
+                                @if (user != null && (user.UserType == "User" || user.UserType == "Teacher" || user.UserType == "Student"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Profilim</a>
+                                    </li>
+                                    @if (user.UserType == "Student")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Schedules" asp-action="MySchedule">Ders Programım</a>
+                                        </li>
+                                    }
+                                    @if (user.UserType == "Teacher")
+                                    {
+                                        <li class="nav-item">
+                                            <a class="nav-link text-dark" asp-area="" asp-controller="Schedules" asp-action="TeacherSchedule">Ders Programım</a>
+                                        </li>
+                                    }
+                                }
+                            }
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

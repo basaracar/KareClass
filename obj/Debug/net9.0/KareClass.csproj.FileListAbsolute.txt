@@ -315,3 +315,4 @@
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/KareClass.pdb
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/KareClass.genruntimeconfig.cache
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/ref/KareClass.dll
+/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/KareClass.sourcelink.json

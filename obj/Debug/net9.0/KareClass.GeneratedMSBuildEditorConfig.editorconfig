@@ -140,6 +140,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NoZWR1bGVzL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/basar/Belgeler/DotNetProjects/KareClass/Views/Schedules/StudentSchedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NoZWR1bGVzL1N0dWRlbnRTY2hlZHVsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/basar/Belgeler/DotNetProjects/KareClass/Views/Schedules/TeacherSchedule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2NoZWR1bGVzL1RlYWNoZXJTY2hlZHVsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/basar/Belgeler/DotNetProjects/KareClass/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

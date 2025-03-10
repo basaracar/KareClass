@@ -163,14 +163,26 @@ public async Task SeedTimeSlots()
             await SaveChangesAsync();
         }
     }
+private static string RemoveTurkishCharacters(string input)
+{
+    var replacements = new Dictionary<char, string>
+    {
+        { 'ı', "i" }, { 'ş', "s" }, { 'ğ', "g" }, { 'ü', "u" }, { 'ç', "c" }, { 'ö', "o" },
+        { 'İ', "I" }, { 'Ş', "S" }, { 'Ğ', "G" }, { 'Ü', "U" }, { 'Ç', "C" }, { 'Ö', "O" }
+    };
 
+    foreach (var replacement in replacements)
+    {
+        input = input.Replace(replacement.Key.ToString(), replacement.Value);
+    }
+    return input;
+}
     public async Task SeedAdminUser(UserManager<ApplicationUser> userManager)
     {
         // Bölümlerin oluşturulduğundan emin olalım
         await SeedDepartments();
         
-        // Bilgisayar Mühendisliği bölümünü alalım
-        var computerEngDepartment = await Departments.FirstOrDefaultAsync(d => d.DepartmentName == "Bilgisayar Mühendisliği");
+       
         
         // Admin kullanıcısı oluştur
         var adminEmail = "admin@kareclass.com";
@@ -194,35 +206,110 @@ public async Task SeedTimeSlots()
                 throw new Exception("Admin kullanıcısı oluşturulamadı: " + string.Join(", ", result.Errors.Select(e => e.Description)));
             }
         }
-        
+        //************************************************************************
         // Örnek öğretmen kullanıcısı oluştur
-        var teacherEmail = "teacher@kareclass.com";
-        var teacherUser = await userManager.FindByEmailAsync(teacherEmail);
-        
-        if (teacherUser == null)
+        var random = new Random();
+
+// 50 öğretmenin bilgileri (ad, soyad)
+var teachers = new List<(string FirstName, string LastName)>
+{
+    ("Ahmet", "Yılmaz"),
+    ("Ayşe", "Kaya"),
+    ("Mehmet", "Demir"),
+    ("Fatma", "Çelik"),
+    ("Hasan", "Öztürk"),
+    ("Zeynep", "Aydın"),
+    ("Ali", "Şahin"),
+    ("Elif", "Korkmaz"),
+    ("Burak", "Erdoğan"),
+    ("Selin", "Aksoy"),
+    ("Murat", "Güneş"),
+    ("Ebru", "Çetin"),
+    ("Deniz", "Arslan"),
+    ("Hülya", "Yıldız"),
+    ("İsmail", "Kılıç"),
+    ("Emre", "Doğan"),
+    ("Gülay", "Şimşek"),
+    ("Serkan", "Özcan"),
+    ("Naber", "Çelik"),
+    ("Hakan", "Yılmaz"),
+    ("Şebnem", "Karaca"),
+    ("Okan", "Kaplan"),
+    ("Tuba", "Aktaş"),
+    ("Mert", "Çınar"),
+    ("Pelin", "Çolak"),
+    ("Kadir", "Ateş"),
+    ("Esra", "Ünal"),
+    ("Caner", "Şen"),
+    ("Derya", "Özdemir"),
+    ("Fatih", "Güler"),
+    ("Ömer", "Faruk"),
+    ("Sevim", "Koç"),
+    ("Barış", "Taş"),
+    ("Aslıhan", "Eker"),
+    ("Tolga", "Avcı"),
+    ("Nilgün", "Erdem"),
+    ("Yasin", "Korkut"),
+    ("Ceren", "Yılmaz"),
+    ("Arda", "Gündüz"),
+    ("Büşra", "Çelik"),
+    ("Volkan", "Şentürk"),
+    ("Hande", "Öz"),
+    ("Ece", "Akın"),
+    ("Mertcan", "Aydın"),
+    ("Seda", "Kılıç"),
+    ("Uğur", "Çelik"),
+    ("Gamze", "Öztürk"),
+    ("Serhat", "Yılmaz"),
+    ("Leyla", "Demir"),
+    ("Eren", "Şahin")
+};
+
+// Her öğretmen için kullanıcı oluşturma
+foreach (var teacher in teachers)
+{
+    // E-posta adresini oluştur (örneğin: ahmet.yilmaz@kareclass.com)
+    var teacherEmail = $"{teacher.FirstName.ToLower()}.{teacher.LastName.ToLower()}@kareclass.com";
+
+    // Kullanıcı adını oluştur (özel karakterler olmadan, örneğin: ahmetyilmaz)
+    var teacherUserName = RemoveTurkishCharacters($"{teacher.FirstName.ToLower()}{teacher.LastName.ToLower()}".Replace(".", "").Replace("@", "").Replace(" ", ""));
+    // Kullanıcıyı kontrol et
+    var teacherUser = await userManager.FindByEmailAsync(teacherEmail);
+
+    if (teacherUser == null)
+    {
+        teacherUser = new ApplicationUser
         {
-            teacherUser = new ApplicationUser
-            {
-                UserName = teacherEmail,
-                Email = teacherEmail,
-                FirstName = "Örnek",
-                LastName = "Öğretmen",
-                UserType = "Teacher",
-                Title = "Dr.",
-                DepartmentId = computerEngDepartment?.DepartmentId,
-                EmailConfirmed = true
-            };
-            
-            var result = await userManager.CreateAsync(teacherUser, "Teacher123!");
-            if (!result.Succeeded)
-            {
-                throw new Exception("Öğretmen kullanıcısı oluşturulamadı: " + string.Join(", ", result.Errors.Select(e => e.Description)));
-            }
+            UserName = teacherUserName,
+            Email = teacherEmail,
+            FirstName = teacher.FirstName,
+            LastName = teacher.LastName,
+            UserType = "Teacher",
+            Title = "Dr.",
+            DepartmentId = random.Next(1, 21), // Rastgele DepartmentId (1-20 arası)
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(teacherUser, "Teacher123!");
+        if (!result.Succeeded)
+        {
+            throw new Exception($"Öğretmen kullanıcısı oluşturulamadı ({teacher.FirstName} {teacher.LastName}): " + 
+                string.Join(", ", result.Errors.Select(e => e.Description)));
         }
+        else
+        {
+            Console.WriteLine($"Öğretmen kullanıcısı oluşturuldu: {teacher.FirstName} {teacher.LastName} (DepartmentId: {teacherUser.DepartmentId})");
+        }
+    }
+    else
+    {
+        Console.WriteLine($"Öğretmen kullanıcısı zaten mevcut: {teacher.FirstName} {teacher.LastName}");
+    }
+}
         
 
 
-        
+        //*****************************************************************************
         // Örnek öğrenci kullanıcısı oluştur
         var studentEmail = "student@kareclass.com";
         var studentUser = await userManager.FindByEmailAsync(studentEmail);
@@ -240,7 +327,7 @@ public async Task SeedTimeSlots()
                 LastName = "Öğrenci",
                 UserType = "Student",
                 SchoolNumber = "2023001",
-                DepartmentId = computerEngDepartment?.DepartmentId,
+                DepartmentId = 1,
                 ClassId = class9A?.ClassId,
                 EmailConfirmed = true
             };

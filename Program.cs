@@ -28,7 +28,7 @@ using (var scope = app.Services.CreateScope())
     await context.SeedCourses();
     await context.SeedDepartments();
     await context.SeedClasses();
-await context.SeedTimeSlots();
+    await context.SeedTimeSlots();
     await context.SeedAdminUser(userManager);
 }
 

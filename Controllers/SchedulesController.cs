@@ -215,7 +215,7 @@ public class SchedulesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    [Authorize(Roles = "Student")]
+    //[Authorize(Roles = "Student")]
     public async Task<IActionResult> MySchedule()
     {
         var user = await _userManager.GetUserAsync(User);

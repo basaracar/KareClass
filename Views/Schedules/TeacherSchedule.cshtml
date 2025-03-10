@@ -1,0 +1,159 @@
+@model IEnumerable<KareClass.Models.Schedule>
+
+@{
+    ViewData["Title"] = "Ders Programım";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Ders Programım</h1>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">@(Model.FirstOrDefault()?.Teacher?.FirstName + " " + Model.FirstOrDefault()?.Teacher?.LastName ?? "Ders Programı")</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Gün</th>
+                                <th>Saat</th>
+                                <th>Ders</th>
+                                <th>Sınıf</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var day in new[] { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma" })
+                            {
+                                var daySchedules = Model.Where(s => s.TimeSlot.DayOfWeek == day).OrderBy(s => s.TimeSlot.StartTime);
+                                
+                                @if (daySchedules.Any())
+                                {
+                                    foreach (var schedule in daySchedules)
+                                    {
+                                        <tr>
+                                            <td>@schedule.TimeSlot.DayOfWeek</td>
+                                            <td>
+                                                @schedule.TimeSlot.StartTime.ToString(@"hh\:mm") - 
+                                                @schedule.TimeSlot.EndTime.ToString(@"hh\:mm")
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">@schedule.Course.CourseName</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-info">@schedule.Class.ClassName</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>@day</td>
+                                        <td colspan="3" class="text-center">Bu güne ait ders bulunmamaktadır.</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i> Henüz ders programınız oluşturulmamıştır.
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Haftalık Özet</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="row">
+                            @foreach (var day in new[] { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma" })
+                            {
+                                var daySchedules = Model.Where(s => s.TimeSlot.DayOfWeek == day).OrderBy(s => s.TimeSlot.StartTime);
+                                <div class="col-12 mb-3">
+                                    <div class="card">
+                                        <div class="card-header bg-light text-center fw-bold">@day</div>
+                                        <div class="card-body p-2">
+                                            @if (daySchedules.Any())
+                                            {
+                                                <ul class="list-group list-group-flush">
+                                                    @foreach (var schedule in daySchedules)
+                                                    {
+                                                        <li class="list-group-item px-2 py-1 d-flex justify-content-between align-items-center">
+                                                            <span>
+                                                                <span class="fw-bold">@schedule.TimeSlot.StartTime.ToString(@"hh\:mm")</span> - 
+                                                                @schedule.Course.CourseName
+                                                            </span>
+                                                            <span class="badge bg-info">@schedule.Class.ClassName</span>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <p class="small text-center text-muted mb-0">Ders yok</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center">Henüz ders programı bulunmamaktadır.</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Sınıf Dağılımı</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        var classesTaught = Model.Select(s => s.Class).Distinct().ToList();
+                        
+                        <div class="list-group">
+                            @foreach (var cls in classesTaught)
+                            {
+                                var classSchedules = Model.Where(s => s.ClassId == cls.ClassId).ToList();
+                                <div class="list-group-item">
+                                    <h6 class="mb-1">@cls.ClassName</h6>
+                                    <p class="small mb-1">Toplam Ders Saati: @classSchedules.Count</p>
+                                    <p class="small mb-0">
+                                        Dersler: 
+                                        @foreach (var course in classSchedules.Select(s => s.Course).Distinct())
+                                        {
+                                            <span class="badge bg-primary me-1">@course.CourseName</span>
+                                        }
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-center">Henüz ders programı bulunmamaktadır.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

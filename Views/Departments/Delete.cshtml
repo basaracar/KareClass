@@ -1,0 +1,42 @@
+@model KareClass.Models.Department
+
+@{
+    ViewData["Title"] = "Bölüm Sil";
+}
+
+<h1>Bölüm Sil</h1>
+
+<div class="card">
+    <div class="card-header bg-danger text-white">
+        <h4>Bu bölümü silmek istediğinize emin misiniz?</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">
+                Bölüm ID
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.DepartmentId)
+            </dd>
+            <dt class="col-sm-3">
+                Bölüm Adı
+            </dt>
+            <dd class="col-sm-9">
+                @Html.DisplayFor(model => model.DepartmentName)
+            </dd>
+        </dl>
+
+        @if (Model.Users != null && Model.Users.Any())
+        {
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> Bu bölüme bağlı @Model.Users.Count kullanıcı bulunmaktadır. Bölümü silmeden önce bu kullanıcıları başka bir bölüme atayınız.
+            </div>
+        }
+        
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="DepartmentId" />
+            <button type="submit" class="btn btn-danger">Bölümü Sil</button>
+            <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+        </form>
+    </div>
+</div> 

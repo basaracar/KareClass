@@ -1,0 +1,28 @@
+@model KareClass.Models.Class
+
+@{
+    ViewData["Title"] = "Sınıf Detayları";
+}
+
+<div class="container">
+    <h1>Sınıf Detayları</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Sınıf Adı</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.ClassName)</dd>
+
+                <dt class="col-sm-3">Sınıf Seviyesi</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.GradeLevel)</dd>
+                
+                <dt class="col-sm-3">Bölüm</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Department.DepartmentName)</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.ClassId" class="btn btn-warning">Düzenle</a>
+            <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+        </div>
+    </div>
+</div> 

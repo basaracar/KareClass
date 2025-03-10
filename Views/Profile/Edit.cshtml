@@ -1,0 +1,131 @@
+@model KareClass.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Profil Düzenle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Profil Düzenle</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        
+                        <div class="mb-3 row">
+                            <label for="firstName" class="col-sm-3 col-form-label">Ad:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="firstName" name="FirstName" value="@Model.FirstName" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="lastName" class="col-sm-3 col-form-label">Soyad:</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" id="lastName" name="LastName" value="@Model.LastName" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">E-posta:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">@Model.Email</p>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Kullanıcı Tipi:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">
+                                    @if (Model.UserType == "Admin")
+                                    {
+                                        <span class="badge bg-danger">Yönetici</span>
+                                    }
+                                    else if (Model.UserType == "Teacher")
+                                    {
+                                        <span class="badge bg-success">Öğretmen</span>
+                                    }
+                                    else if (Model.UserType == "Student")
+                                    {
+                                        <span class="badge bg-primary">Öğrenci</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-info">Kullanıcı</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 row">
+                            <label for="departmentId" class="col-sm-3 col-form-label">Branş:</label>
+                            <div class="col-sm-9">
+                                <select class="form-select" id="departmentId" name="DepartmentId">
+                                    <option value="">Branş Seçiniz</option>
+                                    @foreach (var department in ViewData["Departments"] as IEnumerable<KareClass.Models.Department>)
+                                    {
+                                        if (Model.DepartmentId == department.DepartmentId)
+                                        {
+                                            <option value="@department.DepartmentId" selected>@department.DepartmentName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@department.DepartmentId">@department.DepartmentName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        
+                        @if (Model.UserType == "Student")
+                        {
+                            <div class="mb-3 row">
+                                <label for="schoolNumber" class="col-sm-3 col-form-label">Öğrenci Numarası:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="schoolNumber" name="SchoolNumber" value="@Model.SchoolNumber">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="classId" class="col-sm-3 col-form-label">Sınıf:</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select" id="classId" name="ClassId">
+                                        <option value="">Sınıf Seçiniz</option>
+                                        @foreach (var classItem in ViewData["Classes"] as IEnumerable<KareClass.Models.Class>)
+                                        {
+                                            if (Model.ClassId == classItem.ClassId)
+                                            {
+                                                <option value="@classItem.ClassId" selected>@classItem.ClassName (@(classItem.GradeLevel.HasValue ? classItem.GradeLevel.Value.ToString() + ". Sınıf" : ""))</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@classItem.ClassId">@classItem.ClassName (@(classItem.GradeLevel.HasValue ? classItem.GradeLevel.Value.ToString() + ". Sınıf" : ""))</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        }
+                        
+                        @if (Model.UserType == "Teacher")
+                        {
+                            <div class="mb-3 row">
+                                <label for="title" class="col-sm-3 col-form-label">Unvan:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="title" name="Title" value="@Model.Title">
+                                </div>
+                            </div>
+                        }
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-secondary me-md-2">İptal</a>
+                            <button type="submit" class="btn btn-primary">Kaydet</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

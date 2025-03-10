@@ -1,0 +1,51 @@
+@model IEnumerable<KareClass.Models.Department>
+
+@{
+    ViewData["Title"] = "Bölümler";
+}
+
+<h1>Bölümler</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Yeni Bölüm Ekle</a>
+</p>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DepartmentName)
+                        </th>
+                        <th>
+                            Kullanıcı Sayısı
+                        </th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DepartmentName)
+                            </td>
+                            <td>
+                                @(item.Users?.Count ?? 0)
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.DepartmentId">Detaylar</a>
+                                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.DepartmentId">Düzenle</a>
+                                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.DepartmentId">Sil</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> 

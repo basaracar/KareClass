@@ -1,0 +1,113 @@
+@model KareClass.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Kullanıcı Sil";
+}
+
+<div class="container mt-4">
+    <h2>Kullanıcı Sil</h2>
+    <hr />
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">Kullanıcıyı Silmek İstediğinize Emin Misiniz?</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Bu işlem geri alınamaz. Kullanıcı ve ilişkili tüm veriler kalıcı olarak silinecektir.
+                    </div>
+                    
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Ad:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model.FirstName</p>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Soyad:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model.LastName</p>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">E-posta:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model.Email</p>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Kullanıcı Tipi:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">
+                                <span class="badge @(Model.UserType == "Admin" ? "bg-danger" : Model.UserType == "Teacher" ? "bg-success" : Model.UserType == "Student" ? "bg-primary" : "bg-info")">
+                                    @(Model.UserType == "Admin" ? "Yönetici" : Model.UserType == "Teacher" ? "Öğretmen" : Model.UserType == "Student" ? "Öğrenci" : "Kullanıcı")
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Branş:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">
+                                @if (Model.Department != null)
+                                {
+                                    <span>@Model.Department.DepartmentName</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Branş atanmamış</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    
+                    @if (Model.UserType == "Student")
+                    {
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Öğrenci Numarası:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">@Model.SchoolNumber</p>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Sınıf:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">
+                                    @if (Model.Class != null)
+                                    {
+                                        <span>@Model.Class.ClassName (@(Model.Class.GradeLevel.HasValue ? Model.Class.GradeLevel.Value.ToString() + ". Sınıf" : ""))</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sınıf atanmamış</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    }
+                    
+                    @if (Model.UserType == "Teacher")
+                    {
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Unvan:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">@Model.Title</p>
+                            </div>
+                        </div>
+                    }
+                    
+                    <form asp-action="DeleteUser" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Index" class="btn btn-secondary me-md-2">İptal</a>
+                            <button type="submit" class="btn btn-danger">Kullanıcıyı Sil</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

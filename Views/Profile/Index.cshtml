@@ -1,0 +1,145 @@
+@model KareClass.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Profil";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Profil Bilgileri</h4>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <img src="https://via.placeholder.com/150" class="rounded-circle" alt="Profil Resmi">
+                    </div>
+                    <h5 class="card-title text-center">@Model.FirstName @Model.LastName</h5>
+                    <p class="card-text text-center text-muted">@Model.Email</p>
+                    <p class="card-text text-center">
+                        @if (Model.UserType == "Admin")
+                        {
+                            <span class="badge bg-danger">Yönetici</span>
+                        }
+                        else if (Model.UserType == "Teacher")
+                        {
+                            <span class="badge bg-success">Öğretmen</span>
+                        }
+                        else if (Model.UserType == "Student")
+                        {
+                            <span class="badge bg-primary">Öğrenci</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-info">Kullanıcı</span>
+                        }
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a asp-action="Edit" class="btn btn-primary">Profili Düzenle</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Hesap Bilgileri</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Ad:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model.FirstName</p>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Soyad:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model.LastName</p>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">E-posta:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model.Email</p>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Kullanıcı Tipi:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">
+                                @if (Model.UserType == "Admin")
+                                {
+                                    <span>Yönetici</span>
+                                }
+                                else if (Model.UserType == "Teacher")
+                                {
+                                    <span>Öğretmen</span>
+                                }
+                                else if (Model.UserType == "Student")
+                                {
+                                    <span>Öğrenci</span>
+                                }
+                                else
+                                {
+                                    <span>Kullanıcı</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label">Branş:</label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">
+                                @if (Model.Department != null)
+                                {
+                                    <span>@Model.Department.DepartmentName</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Branş atanmamış</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                    
+                    @if (Model.UserType == "Student")
+                    {
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Öğrenci Numarası:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">@Model.SchoolNumber</p>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Sınıf:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">
+                                    @if (Model.Class != null)
+                                    {
+                                        <span>@Model.Class.ClassName (@(Model.Class.GradeLevel.HasValue ? Model.Class.GradeLevel.Value.ToString() + ". Sınıf" : ""))</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sınıf atanmamış</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                    }
+                    
+                    @if (Model.UserType == "Teacher")
+                    {
+                        <div class="mb-3 row">
+                            <label class="col-sm-3 col-form-label">Unvan:</label>
+                            <div class="col-sm-9">
+                                <p class="form-control-plaintext">@Model.Title</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

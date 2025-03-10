@@ -1,0 +1,75 @@
+@model IEnumerable<KareClass.Models.Class>
+
+@{
+    ViewData["Title"] = "Ders Programları";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Ders Programları</h1>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="d-flex flex-column h-100">
+                        <div class="mb-3">
+                            <h4 class="text-primary mb-2">@item.ClassName</h4>
+                            <div class="text-muted">Sınıf Seviyesi: @item.GradeLevel</div>
+                        </div>
+                        
+                        @if (item.Schedules != null && item.Schedules.Any())
+                        {
+                            <div class="mb-3">
+                                <h5>Mevcut Program</h5>
+                                <ul class="list-group">
+                                    @foreach (var schedule in item.Schedules)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>@schedule.Course.CourseName</strong> - 
+                                                @(schedule.Teacher != null ? (schedule.Teacher.Title + " " + schedule.Teacher.FirstName + " " + schedule.Teacher.LastName) : "Öğretmen atanmamış")<br />
+                                                <small class="text-muted">
+                                                    @schedule.TimeSlot.DayOfWeek 
+                                                    @schedule.TimeSlot.StartTime.ToString(@"hh\:mm") - 
+                                                    @schedule.TimeSlot.EndTime.ToString(@"hh\:mm")
+                                                </small>
+                                            </div>
+                                            <a asp-action="Edit" asp-route-id="@schedule.ScheduleId" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i> Düzenle
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        
+                        <div class="mt-auto">
+                            <hr />
+                            <div class="d-flex justify-content-between">
+                                @if (item.Schedules == null || !item.Schedules.Any())
+                                {
+                                    <a asp-action="Create" asp-route-id="@item.ClassId" class="btn btn-success">
+                                        <i class="fas fa-plus"></i> Program Ekle
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-action="Create" asp-route-id="@item.ClassId" class="btn btn-primary">
+                                        <i class="fas fa-plus"></i> Yeni Ders Ekle
+                                    </a>
+                                }
+                                
+                                <a asp-controller="Classes" asp-action="Details" asp-route-id="@item.ClassId" class="btn btn-info">
+                                    <i class="fas fa-info-circle"></i> Sınıf Detayları
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div> 

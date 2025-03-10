@@ -1,0 +1,121 @@
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center mb-0">KareClass Kayıt</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Account" asp-action="Register" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+                        
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Ad</label>
+                            <input type="text" class="form-control" id="firstName" name="FirstName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Soyad</label>
+                            <input type="text" class="form-control" id="lastName" name="LastName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-posta</label>
+                            <input type="email" class="form-control" id="email" name="Email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userType" class="form-label">Kullanıcı Tipi</label>
+                            <select class="form-select" id="userType" name="UserType" onchange="showHideFields()">
+                                <option value="User">Kullanıcı</option>
+                                <option value="Student">Öğrenci</option>
+                                <option value="Teacher">Öğretmen</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="departmentId" class="form-label">Branş</label>
+                            <select class="form-select" id="departmentId" name="DepartmentId">
+                                <option value="">Branş Seçiniz</option>
+                                @foreach (var department in ViewData["Departments"] as IEnumerable<KareClass.Models.Department>)
+                                {
+                                    <option value="@department.DepartmentId">@department.DepartmentName</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        <!-- Öğrenci için ek alanlar -->
+                        <div id="studentFields" style="display: none;">
+                            <div class="mb-3">
+                                <label for="schoolNumber" class="form-label">Öğrenci Numarası</label>
+                                <input type="text" class="form-control" id="schoolNumber" name="SchoolNumber">
+                            </div>
+                            <div class="mb-3">
+                                <label for="classId" class="form-label">Sınıf</label>
+                                <select class="form-select" id="classId" name="ClassId">
+                                    <option value="">Sınıf Seçiniz</option>
+                                    @foreach (var classItem in ViewData["Classes"] as IEnumerable<KareClass.Models.Class>)
+                                    {
+                                        <option value="@classItem.ClassId">@classItem.ClassName (@(classItem.GradeLevel.HasValue ? classItem.GradeLevel.Value.ToString() + ". Sınıf" : ""))</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Öğretmen için ek alanlar -->
+                        <div id="teacherFields" style="display: none;">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Unvan</label>
+                                <input type="text" class="form-control" id="title" name="Title">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Şifre</label>
+                            <input type="password" class="form-control" id="password" name="Password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Şifre Tekrar</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <p class="mb-0">Zaten hesabınız var mı? <a asp-controller="Account" asp-action="Login">Giriş Yap</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function showHideFields() {
+            var userType = document.getElementById('userType').value;
+            var studentFields = document.getElementById('studentFields');
+            var teacherFields = document.getElementById('teacherFields');
+            
+            if (userType === 'Student') {
+                studentFields.style.display = 'block';
+                teacherFields.style.display = 'none';
+            } else if (userType === 'Teacher') {
+                studentFields.style.display = 'none';
+                teacherFields.style.display = 'block';
+            } else {
+                studentFields.style.display = 'none';
+                teacherFields.style.display = 'none';
+            }
+        }
+        
+        // Sayfa yüklendiğinde çalıştır
+        document.addEventListener('DOMContentLoaded', function() {
+            showHideFields();
+        });
+    </script>
+} 

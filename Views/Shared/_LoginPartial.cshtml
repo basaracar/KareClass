@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using KareClass.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+@if (SignInManager.IsSignedIn(User))
+{
+    ApplicationUser user = null;
+    try 
+    {
+        user = UserManager.GetUserAsync(User).Result;
+    }
+    catch {}
+    
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Profile" asp-action="Index" title="Profil">Merhaba @(user?.FirstName ?? "Kullanıcı")!</a>
+    </li>
+    <li class="nav-item">
+        <form class="form-inline" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" class="nav-link btn btn-link text-dark">Çıkış Yap</button>
+        </form>
+    </li>
+}
+else
+{
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+    </li>
+}
+</ul>

@@ -1,0 +1,99 @@
+@model IEnumerable<KareClass.Models.Class>
+
+@{
+    ViewData["Title"] = "Sınıflar";
+}
+
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Sınıflar</h1>
+        <a asp-action="Create" class="btn btn-primary">Yeni Sınıf Ekle</a>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="border rounded p-3 h-100 bg-light">
+                    <div class="d-flex flex-column h-100">
+                        <div class="mb-3">
+                            <h4 class="text-primary mb-2">@item.ClassName</h4>
+                            <div class="text-muted">Sınıf Seviyesi: @item.GradeLevel</div>
+                            <div class="text-muted">Bölüm: @(item.Department?.DepartmentName ?? "Belirtilmemiş")</div>
+                        </div>
+                        <div class="mt-auto">
+                            <hr />
+                            <div class="d-flex justify-content-between">
+                                <a asp-action="Edit" asp-route-id="@item.ClassId" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Düzenle
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.ClassId" class="btn btn-info btn-sm">
+                                    <i class="fas fa-info-circle"></i> Detaylar
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="showDeleteModal(@item.ClassId, '@item.ClassName')">
+                                    <i class="fas fa-trash"></i> Sil
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Sınıf Sil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="deleteConfirmationText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Sil</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let classIdToDelete = 0;
+
+        function showDeleteModal(id, name) {
+            classIdToDelete = id;
+            document.getElementById('deleteConfirmationText').textContent = `${name} sınıfını silmek istediğinizden emin misiniz?`;
+            var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            modal.show();
+        }
+
+        document.getElementById('confirmDelete').addEventListener('click', function() {
+            if (classIdToDelete > 0) {
+                // CSRF token'ı al
+                var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+                
+                fetch('/Classes/Delete/' + classIdToDelete, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'RequestVerificationToken': token
+                    },
+                    body: '__RequestVerificationToken=' + token
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+    </script>
+
+    @Html.AntiForgeryToken()
+} 

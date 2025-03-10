@@ -1,0 +1,65 @@
+@model IEnumerable<KareClass.Models.TimeSlot>
+
+@{
+    ViewData["Title"] = "Zaman Dilimleri";
+}
+
+<h1>Zaman Dilimleri</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Zaman Dilimi Ekle</a>
+</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">@Html.DisplayFor(modelItem => item.DayOfWeek)</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Başlangıç Saati:</strong> @Html.DisplayFor(modelItem => item.StartTime)</p>
+                    <p><strong>Bitiş Saati:</strong> @Html.DisplayFor(modelItem => item.EndTime)</p>
+                    <div class="btn-group mt-2">
+                        <a asp-action="Edit" asp-route-id="@item.TimeSlotId" class="btn btn-warning">Düzenle</a>
+                        <a asp-action="Details" asp-route-id="@item.TimeSlotId" class="btn btn-info">Detaylar</a>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.TimeSlotId">
+                            Sil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Modal -->
+        <div class="modal fade" id="deleteModal-@item.TimeSlotId" tabindex="-1" aria-labelledby="deleteModalLabel-@item.TimeSlotId" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-danger text-white">
+                        <h5 class="modal-title" id="deleteModalLabel-@item.TimeSlotId">Zaman Dilimini Sil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bu zaman dilimini silmek istediğinizden emin misiniz?</p>
+                        <p><strong>Gün:</strong> @Html.DisplayFor(modelItem => item.DayOfWeek)</p>
+                        <p><strong>Saat:</strong> @Html.DisplayFor(modelItem => item.StartTime) - @Html.DisplayFor(modelItem => item.EndTime)</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                        <form asp-action="Delete" asp-route-id="@item.TimeSlotId" method="post">
+                            <input type="submit" value="Sil" class="btn btn-danger" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Henüz kayıtlı zaman dilimi bulunmamaktadır.
+    </div>
+} 

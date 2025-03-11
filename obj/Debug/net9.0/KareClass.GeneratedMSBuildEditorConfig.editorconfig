@@ -56,6 +56,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/basar/Belgeler/DotNetProjects/KareClass/Views/Attendance/ScanQR.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXR0ZW5kYW5jZS9TY2FuUVIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/basar/Belgeler/DotNetProjects/KareClass/Views/Classes/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQ2xhc3Nlcy9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

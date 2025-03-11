@@ -24,5 +24,5 @@ public class TimeSlot
     public string DisplayText => $"{DayOfWeek} {StartTime.ToString(@"hh\:mm")} - {EndTime.ToString(@"hh\:mm")}";
 
     // Navigation property
-    public ICollection<Schedule> Schedules { get; set; }
+    public ICollection<Schedule>? Schedules { get; set; }
 } 

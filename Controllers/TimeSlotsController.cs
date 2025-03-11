@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using KareClass.Data;
 using KareClass.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace KareClass.Controllers;
 
@@ -11,10 +12,12 @@ namespace KareClass.Controllers;
 public class TimeSlotsController : Controller
 {
     private readonly ApplicationDbContext _context;
+    private readonly ILogger<TimeSlotsController> _logger;
 
-    public TimeSlotsController(ApplicationDbContext context)
+    public TimeSlotsController(ApplicationDbContext context, ILogger<TimeSlotsController> logger)
     {
         _context = context;
+        _logger = logger;
     }
 
     // GET: TimeSlots
@@ -82,32 +85,45 @@ public class TimeSlotsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, [Bind("TimeSlotId,DayOfWeek,StartTime,EndTime")] TimeSlot timeSlot)
     {
+        _logger.LogInformation($"Edit action başladı. ID: {id}, TimeSlotId: {timeSlot.TimeSlotId}");
+        
         if (id != timeSlot.TimeSlotId)
         {
-            return NotFound();
+            _logger.LogWarning($"ID uyuşmazlığı. Route ID: {id}, Model ID: {timeSlot.TimeSlotId}");
+            return Json(new { success = false, message = "ID uyuşmazlığı" });
         }
 
         if (ModelState.IsValid)
         {
             try
             {
+                _logger.LogInformation($"Model geçerli. Güncelleme başlıyor. Değerler: Gün={timeSlot.DayOfWeek}, Başlangıç={timeSlot.StartTime}, Bitiş={timeSlot.EndTime}");
                 _context.Update(timeSlot);
                 await _context.SaveChangesAsync();
+                _logger.LogInformation("Güncelleme başarılı.");
+                return RedirectToAction(nameof(Index));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
+                _logger.LogError($"Güncelleme hatası: {ex.Message}");
                 if (!TimeSlotExists(timeSlot.TimeSlotId))
                 {
-                    return NotFound();
+                    return Json(new { success = false, message = "Kayıt bulunamadı" });
                 }
                 else
                 {
-                    throw;
+                    return Json(new { success = false, message = "Güncelleme sırasında bir hata oluştu" });
                 }
             }
-            return RedirectToAction(nameof(Index));
         }
-        return View(timeSlot);
+        
+        var errors = ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage)
+            .ToList();
+            
+        _logger.LogWarning($"Model doğrulama hataları: {string.Join(", ", errors)}");
+        return Json(new { success = false, message = "Doğrulama hataları", errors = errors });
     }
 
     // GET: TimeSlots/Delete/5

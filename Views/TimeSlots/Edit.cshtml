@@ -13,7 +13,8 @@
                 <h5 class="mb-0">Zaman Dilimi Bilgileri</h5>
             </div>
             <div class="card-body">
-                <form asp-action="Edit">
+                <form asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="TimeSlotId" />
                     
@@ -52,7 +53,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-} 

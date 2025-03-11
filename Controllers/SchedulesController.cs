@@ -73,6 +73,7 @@ public class SchedulesController : Controller
 
         // Sınıfa ait mevcut programları al
         var existingSchedules = await _context.Schedules
+            .Include(s => s.Teacher)
             .Where(s => s.ClassId == id)
             .ToDictionaryAsync(s => s.TimeSlotId, s => s);
 
@@ -92,15 +93,159 @@ public class SchedulesController : Controller
         return View();
     }
 
+    
     // POST: Schedules/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    //
-    public async Task<IActionResult> Create([Bind("ScheduleId,ClassId,CourseId,TeacherId,TimeSlotId")] Schedule schedule)
+    public async Task<IActionResult> Create(int ClassId, int[] TimeSlotId, int[] CourseId, string[] TeacherId)
     {
-        // ... existing code ...
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
+        if (ClassId <= 0)
+        {
+            return BadRequest("Geçersiz sınıf ID'si");
+        }
+
+        var @class = await _context.Classes.FindAsync(ClassId);
+        if (@class == null)
+        {
+            return NotFound("Sınıf bulunamadı");
+        }
+
+        // Gelen dizilerin aynı uzunlukta olduğunu kontrol et
+        if (TimeSlotId.Length != CourseId.Length || TimeSlotId.Length != TeacherId.Length)
+        {
+            ModelState.AddModelError(string.Empty, "Veri tutarsızlığı: Tüm seçimler yapılmalıdır.");
+            
+            // Öğretmen tipindeki kullanıcıları getir
+            var teachers = await _userManager.Users
+                .Where(u => u.UserType == "Teacher")
+                .Select(u => new { Id = u.Id, Name = u.Title + " " + u.FirstName + " " + u.LastName })
+                .ToListAsync();
+            
+            // Sınıfa ait mevcut programları al
+            var existingSchedules = await _context.Schedules
+                .Include(s => s.Teacher)
+                .Where(s => s.ClassId == ClassId)
+                .ToDictionaryAsync(s => s.TimeSlotId, s => s);
+            
+            ViewData["ClassId"] = ClassId;
+            ViewData["ClassName"] = @class.ClassName;
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
+            ViewData["TeacherId"] = new SelectList(teachers, "Id", "Name");
+            ViewData["TimeSlotId"] = new SelectList(_context.TimeSlots, "TimeSlotId", "DisplayText");
+            ViewBag.ExistingSchedules = existingSchedules;
+            
+            return View();
+        }
+
+        // En az bir geçerli ders/öğretmen seçimi olup olmadığını kontrol et
+        bool hasValidEntry = false;
+        for (int i = 0; i < TimeSlotId.Length; i++)
+        {
+            if (CourseId[i] > 0 && !string.IsNullOrWhiteSpace(TeacherId[i]))
+            {
+                hasValidEntry = true;
+                break;
+            }
+        }
+
+        if (!hasValidEntry)
+        {
+            ModelState.AddModelError(string.Empty, "En az bir zaman dilimi için ders ve öğretmen seçimi yapmalısınız.");
+            
+            // Öğretmen tipindeki kullanıcıları getir
+            var teachers = await _userManager.Users
+                .Where(u => u.UserType == "Teacher")
+                .Select(u => new { Id = u.Id, Name = u.Title + " " + u.FirstName + " " + u.LastName })
+                .ToListAsync();
+            
+            // Sınıfa ait mevcut programları al
+            var existingSchedules = await _context.Schedules
+                .Include(s => s.Teacher)
+                .Where(s => s.ClassId == ClassId)
+                .ToDictionaryAsync(s => s.TimeSlotId, s => s);
+            
+            ViewData["ClassId"] = ClassId;
+            ViewData["ClassName"] = @class.ClassName;
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
+            ViewData["TeacherId"] = new SelectList(teachers, "Id", "Name");
+            ViewData["TimeSlotId"] = new SelectList(_context.TimeSlots, "TimeSlotId", "DisplayText");
+            ViewBag.ExistingSchedules = existingSchedules;
+            
+            return View();
+        }
+
+        // Transaction ile işlemi yap
+        using var transaction = await _context.Database.BeginTransactionAsync();
+        try 
+        {
+            // Her bir zaman dilimi için program kaydı oluştur
+            for (int i = 0; i < TimeSlotId.Length; i++)
+            {
+                // Boş seçim kontrolü - Ders veya öğretmen seçilmemişse bu kaydı atla
+                if (CourseId[i] <= 0 || string.IsNullOrWhiteSpace(TeacherId[i]))
+                {
+                    continue; // Boş seçimleri atla
+                }
+
+                // Çakışma kontrolü - aynı sınıf ve zaman diliminde başka bir ders var mı?
+                var existingSchedule = await _context.Schedules
+                    .FirstOrDefaultAsync(s => s.ClassId == ClassId && s.TimeSlotId == TimeSlotId[i]);
+
+                if (existingSchedule != null)
+                {
+                    // Mevcut kaydı güncelle
+                    existingSchedule.CourseId = CourseId[i];
+                    existingSchedule.TeacherId = TeacherId[i];
+                    _context.Update(existingSchedule);
+                }
+                else
+                {
+                    // Yeni kayıt oluştur
+                    var schedule = new Schedule
+                    {
+                        ClassId = ClassId,
+                        TimeSlotId = TimeSlotId[i],
+                        CourseId = CourseId[i],
+                        TeacherId = TeacherId[i]
+                    };
+                    _context.Add(schedule);
+                }
+            }
+
+            await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+            
+            TempData["SuccessMessage"] = "Ders programı başarıyla kaydedildi.";
+            return RedirectToAction(nameof(Index));
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            
+            // Hata durumunda formu yeniden göster
+            ModelState.AddModelError(string.Empty, $"Ders programı kaydedilirken bir hata oluştu: {ex.Message}");
+            
+            // Öğretmen tipindeki kullanıcıları getir
+            var teachers = await _userManager.Users
+                .Where(u => u.UserType == "Teacher")
+                .Select(u => new { Id = u.Id, Name = u.Title + " " + u.FirstName + " " + u.LastName })
+                .ToListAsync();
+            
+            // Sınıfa ait mevcut programları al
+            var existingSchedules = await _context.Schedules
+                .Include(s => s.Teacher)
+                .Where(s => s.ClassId == ClassId)
+                .ToDictionaryAsync(s => s.TimeSlotId, s => s);
+            
+            ViewData["ClassId"] = ClassId;
+            ViewData["ClassName"] = @class.ClassName;
+            ViewData["CourseId"] = new SelectList(_context.Courses, "CourseId", "CourseName");
+            ViewData["TeacherId"] = new SelectList(teachers, "Id", "Name");
+            ViewData["TimeSlotId"] = new SelectList(_context.TimeSlots, "TimeSlotId", "DisplayText");
+            ViewBag.ExistingSchedules = existingSchedules;
+            
+            return View();
+        }
     }
 
     // GET: Schedules/Edit/5
@@ -262,11 +407,63 @@ public class SchedulesController : Controller
 
     public IActionResult GetTeachersByCourse(int courseId)
     {
-        var teachers = _userManager.Users
-            .Where(u => u.UserType == "Teacher")
-            .Select(u => new { value = u.Id.ToString(), text = u.Title + " " + u.FirstName + " " + u.LastName })
-            .ToList();
-        
-        return Json(teachers);
+        if (courseId <= 0)
+        {
+            return Json(new List<object>());
+        }
+
+        try
+        {
+            // Önce ders bilgisini al
+            var course = _context.Courses
+                .Include(c => c.Department)
+                .FirstOrDefault(c => c.CourseId == courseId);
+                
+            if (course == null)
+            {
+                return Json(new List<object>());
+            }
+
+            // Bu dersin bağlı olduğu departman var mı?
+            int? departmentId = course.DepartmentId;
+
+            // Öğretmen sorgusunu oluştur - sadece Teacher tipindeki kullanıcıları getir
+            var query = _userManager.Users
+                .AsNoTracking()
+                .Where(u => u.UserType == "Teacher");
+
+            // Departman varsa, o departmana ait öğretmenleri filtrele
+            if (departmentId.HasValue)
+            {
+                query = query.Where(t => t.DepartmentId == departmentId.Value);
+            }
+
+            // Öncelikle bu dersi daha önce veren öğretmenleri bul
+            var courseTeacherIds = _context.Schedules
+                .AsNoTracking()
+                .Where(s => s.CourseId == courseId)
+                .Select(s => s.TeacherId)
+                .Distinct()
+                .ToList();
+
+            // Öğretmenleri departmana ve daha önce dersi verme durumuna göre sırala
+            var teachers = query
+                .Select(u => new { 
+                    value = u.Id, 
+                    text = u.Title + " " + u.FirstName + " " + u.LastName,
+                    isPreviousTeacher = courseTeacherIds.Contains(u.Id)
+                })
+                .OrderByDescending(t => t.isPreviousTeacher) // Önce bu dersi daha önce verenler
+                .ThenBy(t => t.text) // Sonra alfabetik sıralama
+                .Select(t => new { value = t.value, text = t.text })
+                .ToList();
+
+            return Json(teachers);
+        }
+        catch (Exception ex)
+        {
+            // Hata durumunda boş liste dön
+            return Json(new List<object>());
+        }
     }
 } 

@@ -17,6 +17,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<TimeSlot> TimeSlots { get; set; }
     public DbSet<Schedule> Schedules { get; set; }
     public DbSet<Department> Departments { get; set; }
+    public DbSet<Attendance> Attendances { get; set; }
+    public DbSet<AttendanceRecord> AttendanceRecords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -44,6 +46,24 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
             .HasOne(s => s.TimeSlot)
             .WithMany(ts => ts.Schedules)
             .HasForeignKey(s => s.TimeSlotId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<Attendance>()
+            .HasOne(a => a.Schedule)
+            .WithMany()
+            .HasForeignKey(a => a.ScheduleId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<AttendanceRecord>()
+            .HasOne(ar => ar.Attendance)
+            .WithMany(a => a.AttendanceRecords)
+            .HasForeignKey(ar => ar.AttendanceId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<AttendanceRecord>()
+            .HasOne(ar => ar.Student)
+            .WithMany()
+            .HasForeignKey(ar => ar.StudentId)
             .OnDelete(DeleteBehavior.Restrict);
             
         // Class ve Department arasındaki ilişki konfigürasyonu
@@ -269,7 +289,7 @@ var teachers = new List<(string FirstName, string LastName)>
 foreach (var teacher in teachers)
 {
     // E-posta adresini oluştur (örneğin: ahmet.yilmaz@kareclass.com)
-    var teacherEmail = $"{teacher.FirstName.ToLower()}.{teacher.LastName.ToLower()}@kareclass.com";
+    var teacherEmail =  RemoveTurkishCharacters($"{teacher.FirstName.ToLower()}.{teacher.LastName.ToLower()}@kareclass.com");
 
     // Kullanıcı adını oluştur (özel karakterler olmadan, örneğin: ahmetyilmaz)
     var teacherUserName = RemoveTurkishCharacters($"{teacher.FirstName.ToLower()}{teacher.LastName.ToLower()}".Replace(".", "").Replace("@", "").Replace(" ", ""));
@@ -286,7 +306,7 @@ foreach (var teacher in teachers)
             LastName = teacher.LastName,
             UserType = "Teacher",
             Title = "Dr.",
-            DepartmentId = random.Next(1, 21), // Rastgele DepartmentId (1-20 arası)
+            DepartmentId = random.Next(1, 20), // Rastgele DepartmentId (1-20 arası)
             EmailConfirmed = true
         };
 

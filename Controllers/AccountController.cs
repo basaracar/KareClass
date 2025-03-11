@@ -44,17 +44,21 @@ namespace KareClass.Controllers
             
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(email, password, rememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                // E-posta ile kullanıcıyı bulun
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user != null)
                 {
-                    _logger.LogInformation("Kullanıcı giriş yaptı.");
-                    return RedirectToLocal(returnUrl);
+                    // Şifre kontrolü
+                    var result = await _signInManager.PasswordSignInAsync(user.UserName, password, rememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation("Kullanıcı giriş yaptı: " + email);
+                        return RedirectToLocal(returnUrl);
+                    }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Geçersiz giriş denemesi.");
-                    return View();
-                }
+                
+                ModelState.AddModelError(string.Empty, "Geçersiz e-posta veya şifre.");
+                return View();
             }
 
             return View();

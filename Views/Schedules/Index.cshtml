@@ -4,72 +4,145 @@
     ViewData["Title"] = "Ders Programları";
 }
 
-<div class="container">
+<div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Ders Programları</h1>
     </div>
 
-    <div class="row">
-        @foreach (var item in Model)
-        {
-            <div class="col-md-4 mb-4">
-                <div class="border rounded p-3 h-100 bg-light">
-                    <div class="d-flex flex-column h-100">
-                        <div class="mb-3">
-                            <h4 class="text-primary mb-2">@item.ClassName</h4>
-                            <div class="text-muted">Sınıf Seviyesi: @item.GradeLevel</div>
+    @foreach (var item in Model)
+    {
+        <div class="card mb-5">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">@item.ClassName</h4>
+                <div class="small">Sınıf Seviyesi: @item.GradeLevel</div>
+            </div>
+            <div class="card-body">
+                @if (item.Schedules != null && item.Schedules.Any())
+                {
+                    <div class="mb-4">
+                        <h5 class="mb-3">Günlük Program Özeti</h5>
+                        <div class="row">
+                            @foreach (var day in new[] { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma" })
+                            {
+                                var daySchedules = item.Schedules.Where(s => s.TimeSlot.DayOfWeek == day).OrderBy(s => s.TimeSlot.StartTime);
+                                <div class="col-md mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-header text-center fw-bold">@day</div>
+                                        <div class="card-body p-2">
+                                            @if (daySchedules.Any())
+                                            {
+                                                <ul class="list-group list-group-flush">
+                                                    @foreach (var schedule in daySchedules)
+                                                    {
+                                                        <li class="list-group-item px-2 py-1 d-flex justify-content-between align-items-center">
+                                                            <div>
+                                                                <small>
+                                                                    <span class="fw-bold">@schedule.TimeSlot.StartTime.ToString(@"hh\:mm")</span> - 
+                                                                    @schedule.Course.CourseName
+                                                                </small>
+                                                            </div>
+                                                            <a asp-action="Edit" asp-route-id="@schedule.ScheduleId" class="btn btn-warning btn-sm btn-sm">
+                                                                <i class="fas fa-edit"></i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <p class="small text-center text-muted mb-0">Ders yok</p>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                        
-                        @if (item.Schedules != null && item.Schedules.Any())
-                        {
-                            <div class="mb-3">
-                                <h5>Mevcut Program</h5>
-                                <ul class="list-group">
-                                    @foreach (var schedule in item.Schedules)
+                    </div>
+
+                    <div class="table-responsive mt-4">
+                        <h5 class="mb-3">Detaylı Program</h5>
+                        <table class="table table-bordered table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Gün</th>
+                                    <th>Saat</th>
+                                    <th>Ders</th>
+                                    <th>Öğretmen</th>
+                                    <th>İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var day in new[] { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma" })
+                                {
+                                    var daySchedules = item.Schedules.Where(s => s.TimeSlot.DayOfWeek == day).OrderBy(s => s.TimeSlot.StartTime);
+                                    
+                                    @if (daySchedules.Any())
                                     {
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <strong>@schedule.Course.CourseName</strong> - 
-                                                @(schedule.Teacher != null ? (schedule.Teacher.Title + " " + schedule.Teacher.FirstName + " " + schedule.Teacher.LastName) : "Öğretmen atanmamış")<br />
-                                                <small class="text-muted">
-                                                    @schedule.TimeSlot.DayOfWeek 
+                                        foreach (var schedule in daySchedules)
+                                        {
+                                            <tr>
+                                                <td>@schedule.TimeSlot.DayOfWeek</td>
+                                                <td>
                                                     @schedule.TimeSlot.StartTime.ToString(@"hh\:mm") - 
                                                     @schedule.TimeSlot.EndTime.ToString(@"hh\:mm")
-                                                </small>
-                                            </div>
-                                            <a asp-action="Edit" asp-route-id="@schedule.ScheduleId" class="btn btn-warning btn-sm">
-                                                <i class="fas fa-edit"></i> Düzenle
-                                            </a>
-                                        </li>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-primary">@schedule.Course.CourseName</span>
+                                                </td>
+                                                <td>
+                                                    @(schedule.Teacher != null 
+                                                        ? $"{schedule.Teacher.Title} {schedule.Teacher.FirstName} {schedule.Teacher.LastName}" 
+                                                        : "Öğretmen atanmamış")
+                                                </td>
+                                                <td>
+                                                    <a asp-action="Edit" asp-route-id="@schedule.ScheduleId" class="btn btn-warning btn-sm">
+                                                        <i class="fas fa-edit"></i> Düzenle
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
-                                </ul>
-                            </div>
+                                    else
+                                    {
+                                        <tr>
+                                            <td>@day</td>
+                                            <td colspan="4" class="text-center">Bu güne ait ders bulunmamaktadır.</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i> Henüz bu sınıfa ait ders programı oluşturulmamıştır.
+                    </div>
+                }
+                
+                <div class="mt-4">
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        @if (item.Schedules == null || !item.Schedules.Any())
+                        {
+                            <a asp-action="Create" asp-route-id="@item.ClassId" class="btn btn-success">
+                                <i class="fas fa-plus"></i> Program Ekle
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="Create" asp-route-id="@item.ClassId" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Yeni Ders Ekle
+                            </a>
                         }
                         
-                        <div class="mt-auto">
-                            <hr />
-                            <div class="d-flex justify-content-between">
-                                @if (item.Schedules == null || !item.Schedules.Any())
-                                {
-                                    <a asp-action="Create" asp-route-id="@item.ClassId" class="btn btn-success">
-                                        <i class="fas fa-plus"></i> Program Ekle
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a asp-action="Create" asp-route-id="@item.ClassId" class="btn btn-primary">
-                                        <i class="fas fa-plus"></i> Yeni Ders Ekle
-                                    </a>
-                                }
-                                
-                                <a asp-controller="Classes" asp-action="Details" asp-route-id="@item.ClassId" class="btn btn-info">
-                                    <i class="fas fa-info-circle"></i> Sınıf Detayları
-                                </a>
-                            </div>
-                        </div>
+                        <a asp-controller="Classes" asp-action="Details" asp-route-id="@item.ClassId" class="btn btn-info">
+                            <i class="fas fa-info-circle"></i> Sınıf Detayları
+                        </a>
                     </div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div> 

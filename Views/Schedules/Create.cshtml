@@ -59,7 +59,7 @@
                                                     }
                                                 </td>
                                                 <td>
-                                                    <select name="CourseId[@index]" class="form-select">
+                                                    <select name="CourseId[@index]" class="form-select course-select" data-index="@index">
                                                         <option value="0">-- Ders Seçin --</option>
                                                         @foreach (var course in courses)
                                                         {
@@ -76,19 +76,15 @@
                                                     </select>
                                                 </td>
                                                 <td>
-                                                    <select name="TeacherId[@index]" class="form-select">
-                                                        <option value="0">-- Öğretmen Seçin --</option>
-                                                        @foreach (var teacher in teachers)
+                                                    <select name="TeacherId[@index]" class="form-select teacher-select" id="teacher-@index" data-has-existing="@(hasExistingSchedule ? "true" : "false")" data-existing-id="@(hasExistingSchedule ? existingSchedule.TeacherId : "")">
+                                                        <option value="">-- Öğretmen Seçin --</option>
+                                                        @if (hasExistingSchedule && existingSchedule.TeacherId != null)
                                                         {
-                                                            var isSelected = hasExistingSchedule && existingSchedule.TeacherId.ToString() == teacher.Value;
-                                                            if (isSelected)
-                                                            {
-                                                                <option value="@teacher.Value" selected>@teacher.Text</option>
-                                                            }
-                                                            else
-                                                            {
-                                                                <option value="@teacher.Value">@teacher.Text</option>
-                                                            }
+                                                            <option value="@existingSchedule.TeacherId" selected>
+                                                                @(existingSchedule.Teacher != null ? 
+                                                                  existingSchedule.Teacher.Title + " " + existingSchedule.Teacher.FirstName + " " + existingSchedule.Teacher.LastName : 
+                                                                  "Öğretmen Bulunamadı")
+                                                            </option>
                                                         }
                                                     </select>
                                                 </td>
@@ -104,7 +100,7 @@
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save"></i> Programı Kaydet
                             </button>
-                            <button id="clearAll" class="btn btn-warning">
+                            <button id="clearAll" type="button" class="btn btn-warning">
                                 <i class="fas fa-eraser"></i> Tümünü Temizle
                             </button>
                             <a asp-action="Index" class="btn btn-secondary">
@@ -123,31 +119,85 @@
     
     <script>
         $(document).ready(function() {
-            // Ders seçildiğinde ilgili öğretmenleri filtrele
-            $('select[name^="CourseId"]').change(function() {
+            // Sayfa yüklendiğinde mevcut ders seçimlerine göre öğretmenleri filtrele
+            $('.course-select').each(function() {
                 var courseId = $(this).val();
-                var index = $(this).attr('name').match(/\d+/)[0];
-                var teacherSelect = $('select[name="TeacherId[' + index + ']"]');
+                var index = $(this).data('index');
                 
+                if (courseId > 0) {
+                    var teacherSelect = $('#teacher-' + index);
+                    var hasExisting = teacherSelect.data('has-existing') === 'true';
+                    var existingId = teacherSelect.data('existing-id');
+                    
+                    if (hasExisting && existingId) {
+                        // Mevcut öğretmen seçimi varsa, diğer öğretmenleri de yükle
+                        loadTeachersForCourse(courseId, teacherSelect, existingId);
+                    }
+                }
+            });
+            
+            // Ders seçildiğinde ilgili öğretmenleri filtrele
+            $('.course-select').change(function() {
+                var courseId = $(this).val();
+                var index = $(this).data('index');
+                var teacherSelect = $('#teacher-' + index);
+                
+                // Ders seçilmediğinde öğretmen seçimini sıfırla
                 if (courseId == 0) {
-                    // Ders seçilmediğinde öğretmen seçimini sıfırla
                     teacherSelect.empty();
-                    teacherSelect.append('<option value="0">-- Öğretmen Seçin --</option>');
+                    teacherSelect.append('<option value="">-- Öğretmen Seçin --</option>');
                     return;
                 }
                 
-                // AJAX ile seçilen derse göre öğretmenleri getir
-                $.get('/Schedules/GetTeachersByCourse', { courseId: courseId }, function(teachers) {
-                    teacherSelect.empty();
-                    teacherSelect.append('<option value="0">-- Öğretmen Seçin --</option>');
-                    
-                    teachers.forEach(function(teacher) {
-                        teacherSelect.append($('<option></option>')
-                            .val(teacher.value)
-                            .text(teacher.text));
-                    });
-                });
+                // Öğretmenleri yükle
+                loadTeachersForCourse(courseId, teacherSelect, "");
             });
+            
+            // Öğretmenleri yükleyen fonksiyon
+            function loadTeachersForCourse(courseId, teacherSelect, selectedTeacherId) {
+                // Yükleniyor göstergesi
+                teacherSelect.prop('disabled', true);
+                var currentSelectedValue = teacherSelect.val();
+                
+                // AJAX ile seçilen derse göre öğretmenleri getir
+                $.ajax({
+                    url: '/Schedules/GetTeachersByCourse',
+                    type: 'GET',
+                    data: { courseId: courseId },
+                    dataType: 'json',
+                    success: function(teachers) {
+                        teacherSelect.empty();
+                        teacherSelect.append('<option value="">-- Öğretmen Seçin --</option>');
+                        
+                        if (teachers && teachers.length > 0) {
+                            $.each(teachers, function(i, teacher) {
+                                var option = $('<option></option>')
+                                    .attr('value', teacher.value)
+                                    .text(teacher.text);
+                                
+                                // Eğer bu öğretmen daha önce seçilmişse veya mevcut kayıttaki öğretmense, seçili olarak işaretle
+                                if ((selectedTeacherId && teacher.value === selectedTeacherId) || 
+                                    (currentSelectedValue && teacher.value === currentSelectedValue)) {
+                                    option.prop('selected', true);
+                                }
+                                
+                                teacherSelect.append(option);
+                            });
+                        } else {
+                            teacherSelect.append('<option value="" disabled>Bu ders için uygun öğretmen bulunamadı</option>');
+                        }
+                    },
+                    error: function() {
+                        teacherSelect.empty();
+                        teacherSelect.append('<option value="">-- Öğretmen Seçin --</option>');
+                        teacherSelect.append('<option value="" disabled>Öğretmen listesi yüklenemedi</option>');
+                    },
+                    complete: function() {
+                        // İşlem tamamlandığında seçimi etkinleştir
+                        teacherSelect.prop('disabled', false);
+                    }
+                });
+            }
             
             // Satır renklerini değiştir
             $('tr').hover(
@@ -162,8 +212,8 @@
             // Tüm dersleri temizle butonu
             $('#clearAll').click(function(e) {
                 e.preventDefault();
-                $('select[name^="CourseId"]').val(0);
-                $('select[name^="TeacherId"]').val(0);
+                $('.course-select').val(0);
+                $('.teacher-select').empty().append('<option value="">-- Öğretmen Seçin --</option>');
             });
         });
     </script>

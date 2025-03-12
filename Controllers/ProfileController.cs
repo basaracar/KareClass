@@ -35,7 +35,7 @@ namespace KareClass.Controllers
             {
                 user.Class = await _context.Classes.FindAsync(user.ClassId);
             }
-            
+
             // Bölüm bilgisini yükle
             if (user.DepartmentId.HasValue)
             {
@@ -69,17 +69,18 @@ namespace KareClass.Controllers
                     .Where(s => s.TimeSlot.DayOfWeek == turkishDay &&
                               s.TimeSlot.StartTime <= currentTime &&
                               s.TimeSlot.EndTime >= currentTime)
-                    .FirstOrDefaultAsync(s => user.UserType == "Student" 
-                        ? s.ClassId == user.ClassId 
+                    .FirstOrDefaultAsync(s => user.UserType == "Student"
+                        ? s.ClassId == user.ClassId
                         : s.TeacherId == user.Id);
-                // Aktif yoklama kontrolü
-                    var activeAttendance = await _context.Attendances
-                        .FirstOrDefaultAsync(a => a.ScheduleId == currentLesson.ScheduleId && 
-                                                a.IsActive && 
-                                                a.Date.Date == DateTime.Today);
+
 
                 if (currentLesson != null)
                 {
+                    // Aktif yoklama kontrolü
+                    var activeAttendance = await _context.Attendances
+                        .FirstOrDefaultAsync(a => a.ScheduleId == currentLesson.ScheduleId &&
+                                                a.IsActive &&
+                                                a.Date.Date == DateTime.Today);
                     ViewBag.CurrentLesson = new
                     {
                         ScheduleId = currentLesson.ScheduleId,
@@ -88,10 +89,10 @@ namespace KareClass.Controllers
                         EndTime = currentLesson.TimeSlot.EndTime.ToString(@"hh\:mm"),
                         TeacherName = $"{currentLesson.Teacher.Title} {currentLesson.Teacher.FirstName} {currentLesson.Teacher.LastName}",
                         ClassName = currentLesson.Class.ClassName,
-                        AttendanceId= activeAttendance != null ? activeAttendance.AttendanceId: 0
+                        AttendanceId = activeAttendance != null ? activeAttendance.AttendanceId : 0
                     };
 
-                    
+
 
                     if (activeAttendance != null)
                     {
@@ -104,7 +105,7 @@ namespace KareClass.Controllers
                         if (user.UserType == "Student")
                         {
                             var hasJoined = await _context.AttendanceRecords
-                                .AnyAsync(ar => ar.AttendanceId == activeAttendance.AttendanceId && 
+                                .AnyAsync(ar => ar.AttendanceId == activeAttendance.AttendanceId &&
                                               ar.StudentId == user.Id);
                             ViewBag.HasJoinedAttendance = hasJoined;
 
@@ -135,13 +136,13 @@ namespace KareClass.Controllers
 
             ViewData["Classes"] = await _context.Classes.ToListAsync();
             ViewData["Departments"] = await _context.Departments.ToListAsync();
-            
+
             // Eğer kullanıcı öğrenci ise sınıf bilgisini yükle
             if (user.UserType == "Student" && user.ClassId.HasValue)
             {
                 user.Class = await _context.Classes.FindAsync(user.ClassId);
             }
-            
+
             // Bölüm bilgisini yükle
             if (user.DepartmentId.HasValue)
             {
@@ -167,7 +168,7 @@ namespace KareClass.Controllers
             user.FirstName = firstName;
             user.LastName = lastName;
             user.DepartmentId = departmentId;
-            
+
             // Kullanıcı tipine göre ek alanları güncelle
             if (user.UserType == "Student")
             {
@@ -193,4 +194,4 @@ namespace KareClass.Controllers
             return View(user);
         }
     }
-} 
+}

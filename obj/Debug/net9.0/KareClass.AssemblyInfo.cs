@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KareClass")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9850cc75dc66999715681aa30670812d6db0f74")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e3a25b26eed5b7c1f4bff83c17af6748cce1a3c3")]
 [assembly: System.Reflection.AssemblyProductAttribute("KareClass")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KareClass")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

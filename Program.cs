@@ -18,19 +18,19 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Veritabanı işlemleri
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-    context.Database.Migrate();
-    await context.SeedCourses();
-    await context.SeedDepartments();
-    await context.SeedClasses();
-    await context.SeedTimeSlots();
-    await context.SeedAdminUser(userManager);
-}
+// // Veritabanı işlemleri
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     var context = services.GetRequiredService<ApplicationDbContext>();
+//     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+//     context.Database.Migrate();
+//     await context.SeedCourses();
+//     await context.SeedDepartments();
+//     await context.SeedClasses();
+//     await context.SeedTimeSlots();
+//     await context.SeedAdminUser(userManager);
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

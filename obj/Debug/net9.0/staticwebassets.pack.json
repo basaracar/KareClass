@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/img/avatar.png",
+      "PackagePath": "staticwebassets/img/avatar.png"
+    },
+    {
       "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },

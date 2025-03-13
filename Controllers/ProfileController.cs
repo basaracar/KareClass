@@ -79,7 +79,6 @@ namespace KareClass.Controllers
                     // Aktif yoklama kontrolü
                     var activeAttendance = await _context.Attendances
                         .FirstOrDefaultAsync(a => a.ScheduleId == currentLesson.ScheduleId &&
-                                                a.IsActive &&
                                                 a.Date.Date == DateTime.Today);
                     ViewBag.CurrentLesson = new
                     {
@@ -89,7 +88,8 @@ namespace KareClass.Controllers
                         EndTime = currentLesson.TimeSlot.EndTime.ToString(@"hh\:mm"),
                         TeacherName = $"{currentLesson.Teacher.Title} {currentLesson.Teacher.FirstName} {currentLesson.Teacher.LastName}",
                         ClassName = currentLesson.Class.ClassName,
-                        AttendanceId = activeAttendance != null ? activeAttendance.AttendanceId : 0
+                        AttendanceId = activeAttendance != null ? activeAttendance.AttendanceId : 0,
+                        IsActive=activeAttendance!=null&&activeAttendance.IsActive ? 1 : 0 
                     };
 
 

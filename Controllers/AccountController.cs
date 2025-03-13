@@ -30,8 +30,26 @@ namespace KareClass.Controllers
         }
 
         [HttpGet]
-        public IActionResult Login(string returnUrl = null)
+        public async Task<IActionResult> Login(string returnUrl = null)
         {
+             if (_signInManager.IsSignedIn(User))
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user != null)
+            {
+                switch (user.UserType)
+                {
+                    case "Admin":
+                        return RedirectToAction("Index", "Admin");
+                    case "Student":
+                        return RedirectToAction("Index", "Profile");
+                    case "Teacher":
+                        return RedirectToAction("Index", "Profile");
+                    default: // User
+                        return RedirectToAction("Index", "Profile");
+                }
+            }
+        }
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
@@ -56,8 +74,8 @@ namespace KareClass.Controllers
                         return RedirectToLocal(returnUrl);
                     }
                 }
-                
-                ModelState.AddModelError(string.Empty, "Geçersiz e-posta veya şifre.");
+                ViewBag.Error = "Geçersiz e-posta veya şifre.";
+               
                 return View();
             }
 
@@ -124,7 +142,7 @@ namespace KareClass.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("Kullanıcı çıkış yaptı.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(AccountController.Login), "Account");
         }
 
         [HttpGet]
@@ -141,7 +159,7 @@ namespace KareClass.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(AccountController.Login), "Account");
             }
         }
     }

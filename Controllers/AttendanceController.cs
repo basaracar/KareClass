@@ -125,6 +125,39 @@ namespace KareClass.Controllers
                 return Json(new { success = false, message = $"Bir hata oluştu: {ex.Message}" });
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> StopAttendance(int attendanceId)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Kullanıcı bulunamadı." });
+                }
+
+                var attendance = await _context.Attendances
+                    .Include(a => a.Schedule)
+                    .FirstOrDefaultAsync(a => a.AttendanceId == attendanceId);
+
+                if (attendance == null){
+                    return Json(new { success = false, message = "Yoklama Bulunamadı." });
+                }
+
+                attendance.IsActive = false;
+                attendance.EndTime = DateTime.Now;
+                _context.Update(attendance);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"HATA: {ex.Message}");
+                Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
 
         [HttpGet]
         [Route("Attendance/GetParticipants/{attendanceId}")]

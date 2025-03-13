@@ -2,7 +2,6 @@
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/appsettings.json
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/KareClass.staticwebassets.runtime.json
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/KareClass.staticwebassets.endpoints.json
-/home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/app.db
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/KareClass
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/KareClass.deps.json
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/KareClass.runtimeconfig.json

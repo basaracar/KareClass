@@ -1,7 +1,6 @@
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/publish/KareClass
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/publish/appsettings.Development.json
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/publish/appsettings.json
-/home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/publish/app.db
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/publish/KareClass.dll
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/publish/KareClass.runtimeconfig.json
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/publish/KareClass.pdb

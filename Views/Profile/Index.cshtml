@@ -1,11 +1,11 @@
 @model KareClass.Models.ApplicationUser
 @{
-    ViewData["Title"] = "Profil";
+   ViewData["Title"] = "Profil";
 }
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-4">
-            @DateTime.Now;
+          Saat:  @ViewBag.Time.ToString(@"hh\:mm")
         </div>
     </div>
 </div>
@@ -179,22 +179,30 @@
                                 </div>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-12 text-center">
+                                
                                     @if (Model.UserType == "Teacher")
                                     {
                                         if(ViewBag.CurrentLesson.AttendanceId==0){
-                                        <div>
+                                        <div class="col">
                                         <button type="button" class="btn btn-success" onclick="startAttendance(@ViewBag.CurrentLesson.ScheduleId,@ViewBag.CurrentLesson.AttendanceId)">
                                             <i class="fas fa-clipboard-list"></i> Yoklama Al
                                         </button></div>
+                                        <div class="col">
+                                        <a asp-action="RollCall" asp-controller="Profile" asp-route-id="@ViewBag.CurrentLesson.ScheduleId" class="btn btn-success" >
+                                            <i class="fas fa-clipboard-list"></i>Yüz Tanıma İle Yoklama Al
+                                        </a></div>
                                         }else if(ViewBag.CurrentLesson.IsActive==1){
-                                            <div>
+                                            <div class="col">
                                             <button type="button" class="btn btn-danger" onclick="stopAttendance(@ViewBag.CurrentLesson.AttendanceId)">
                                             <i class="fas fa-clipboard-list"></i> Yoklamayı Bitir
                                         </button>
                                         <button type="button" class="btn btn-success" onclick="startAttendance(@ViewBag.CurrentLesson.ScheduleId,@ViewBag.CurrentLesson.AttendanceId)">
                                             <i class="fas fa-clipboard-list"></i> QrCode Göster
                                         </button></div>
+                                        <div class="col">
+                                        <a asp-action="RollCall" asp-controller="Profile" asp-route-id="@ViewBag.CurrentLesson.ScheduleId" class="btn btn-success" >
+                                            <i class="fas fa-clipboard-list"></i>Yüz Tanıma İle Yoklama Al
+                                        </a></div>
                                         }else{
                                         <p class="text-succes">Yoklama Sonlanmış</p>
                                         }
@@ -218,6 +226,7 @@
                                         </div>
 
                                         <!-- Katılımcı Listesi -->
+                                        <div class="col-xl-12">
                                         <div class="card mt-4">
                                             <div class="card-header bg-primary text-white">
                                                 <h5 class="mb-0">Yoklamaya Katılan Öğrenciler</h5>
@@ -227,6 +236,7 @@
                                                     <!-- Katılımcılar buraya dinamik olarak eklenecek -->
                                                 </div>
                                             </div>
+                                        </div>
                                         </div>
                                     }
                                     else if (Model.UserType == "Student")
@@ -265,7 +275,7 @@
                                             </div>
                                         }
                                     }
-                                </div>
+                                
                             </div>
                         }
                         else

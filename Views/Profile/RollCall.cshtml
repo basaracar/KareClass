@@ -1,0 +1,153 @@
+@{
+ViewData["Title"] = "Profil";
+}
+<div class="container">
+    @if(ViewBag.Error!= null)
+    {
+    <div class="row mb-4">
+        <div class="col-12 alert alert-danger">
+            @ViewBag.Error
+        </div>
+    </div>
+    }
+    <div class="row mb-4">
+        <div class="col">@ViewBag.TeacherName</div>
+        <div class="col">@ViewBag.ClassName Sınıfı</div>
+        <div class="col">@ViewBag.CourseName Dersi</div>
+        <div class="col">@ViewBag.StartTime - @ViewBag.EndTime</div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+
+            <button type="button" class="btn btn-primary" id="startBtn" value="0">Yoklamayı Başlat</button>
+        </div>
+        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12" id="rollcall-button">
+         
+        </div>
+        <div class="row mb-4 p-4 justify-content-center">
+            <div class="col-md-4 img-fluid p-2" id="webcam-container">
+
+            </div>
+            <div class="col-md-8 p-2" id="label-container">
+
+            </div>
+        </div>
+
+
+    </div>
+    @section Scripts {
+    <script src='https://cdn.jsdelivr.net/npm/@@tensorflow/tfjs@latest/dist/tf.min.js'></script>
+    <script
+        src='https://cdn.jsdelivr.net/npm/@@teachablemachine/image@latest/dist/teachablemachine-image.min.js'></script>
+    <script type="text/javascript">
+        // More API functions here:
+        // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+        // the link to your model provided by Teachable Machine export panel
+        var rollCallBtn=document.createElement("button");
+        rollCallBtn.innerHTML="Yoklama Al";
+        rollCallBtn.className="btn btn-primary";
+        rollCallBtn.onclick=function(){
+            var data={
+                attendanceId: @ViewBag.AttendanceId,
+                rollCall: rollCall
+            };
+            var url = '@Url.Action("TakeRollCall", "Profile")';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.location="@Url.Action("Index", "Profile")";
+                } else {
+                    alert("Yoklama alınamadı."+data.message);
+                }
+            })
+            .catch(error => {
+                alert("Bir hata oluştu.");
+            });
+        };
+
+
+        const URL = "../../js/models/";
+
+        let model, webcam, labelContainer, maxPredictions;
+        let rollCall = [];
+        // Load the image model and setup the webcam
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            // load the model and metadata
+            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+            // or files from your local hard drive
+            // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+            model = await tmImage.load(modelURL, metadataURL);
+            maxPredictions = model.getTotalClasses();
+
+            // Convenience function to setup a webcam
+            const flip = true; // whether to flip the webcam
+            webcam = new tmImage.Webcam(300, 300, flip); // width, height, flip
+            await webcam.setup(); // request access to the webcam
+            await webcam.play();
+            window.requestAnimationFrame(loop);
+            //Buttonu gizle
+            document.getElementById("startBtn").value="1"
+            document.getElementById("startBtn").innerHTML="Durdur";
+            // append elements to the DOM
+            document.getElementById("webcam-container").appendChild(webcam.canvas);
+            labelContainer = document.getElementById("label-container");
+            for (let i = 0; i < maxPredictions; i++) { // and class labels
+                labelContainer.appendChild(document.createElement("div"));
+            }
+            document.getElementById("rollcall-button").appendChild(rollCallBtn);
+
+        }
+        document.getElementById("startBtn").onclick = function() {
+            if(document.getElementById("startBtn").value=="0"){
+                document.getElementById("startBtn").className="btn btn-danger";
+                init();
+            }else{
+                console.log(rollCall);
+                webcam.stop();
+                document.getElementById("startBtn").className="btn btn-primary";
+                document.getElementById("webcam-container").removeChild(webcam.canvas);
+                document.getElementById("startBtn").value="0";
+                document.getElementById("startBtn").innerHTML="Yoklamayı Başlat";
+            }
+        }
+
+
+
+        async function loop() {
+            webcam.update(); // update the webcam frame
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        // run the webcam image through the image model
+        async function predict() {
+            // predict can take in an image, video or canvas html element
+            const prediction = await model.predict(webcam.canvas);
+            
+            for (let i = 0; i < maxPredictions; i++) {
+                if (prediction[i].probability.toFixed(2) > 0.6) {
+                    if(!rollCall.includes(prediction[i].className)){
+                        rollCall.push(prediction[i].className);
+                    }
+                    //console.log(prediction[i].className + ": " + prediction[i].probability.toFixed(2));
+                    const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2)*100 + "%";
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+                }
+
+            }
+        }
+      
+
+    </script>
+    }

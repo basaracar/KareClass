@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Bölümler";
 }
-
+<div class="container">
 <h1>Bölümler</h1>
 
 <p>
@@ -12,40 +12,77 @@
 
 <div class="card">
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DepartmentName)
-                        </th>
-                        <th>
-                            Kullanıcı Sayısı
-                        </th>
-                        <th>İşlemler</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DepartmentName)
-                            </td>
-                            <td>
-                                @(item.Users?.Count ?? 0)
-                            </td>
-                            <td>
-                                <div class="btn-group">
-                                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.DepartmentId">Detaylar</a>
-                                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.DepartmentId">Düzenle</a>
-                                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.DepartmentId">Sil</a>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+        <!-- Header Row -->
+        <div class="row bg-light py-2 fw-bold border-bottom mb-2">
+            <div class="col-5">
+                @Html.DisplayNameFor(model => model.DepartmentName)
+            </div>
+            <div class="col-3">
+                Kullanıcı Sayısı
+            </div>
+            <div class="col-4">
+                İşlemler
+            </div>
+        </div>
+
+        <!-- Data Rows -->
+        @foreach (var item in Model)
+        {
+            <div class="row py-2 border-bottom align-items-center">
+                <div class="col-5">
+                    @Html.DisplayFor(modelItem => item.DepartmentName)
+                </div>
+                <div class="col-3">
+                    @(item.Users?.Count ?? 0)
+                </div>
+                <div class="col-4">
+                    <div class="btn-group">
+                        <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.DepartmentId">Detaylar</a>
+                        <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.DepartmentId">Düzenle</a>
+                        <a class="btn btn-sm btn-danger delete-btn" data-id="@item.DepartmentId" data-name="@item.DepartmentName" data-bs-toggle="modal" data-bs-target="#deleteModal">Sil</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Silme Onayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><span id="departmentName"></span> bölümünü silmek istediğinize emin misiniz?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                <form id="deleteForm" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                </form>
+            </div>
         </div>
     </div>
-</div> 
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+                    document.getElementById('departmentName').textContent = name;
+                    document.getElementById('deleteForm').action = `/Departments/Delete/${id}`;
+                });
+            });
+        });
+    </script>
+}

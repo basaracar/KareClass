@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rSd1y5rJ4gPP8R/Reo92dfty+kRgR3gCdbTgbiLuoik=",
+  "Hash": "1/IsuTZMBc+4vmW3GYVEgEE0u5kWWbLgZ3JkLJfFOwI=",
   "Source": "KareClass",
   "BasePath": "_content/KareClass",
   "Mode": "Default",
@@ -1359,6 +1359,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/lib/bootstrap/dist/css/bootstrap.css"
+    },
+    {
+      "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/0b2uan4o3u-70at6fj60c.gz",
+      "SourceId": "KareClass",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/KareClass",
+      "RelativePath": "js/models/model#[.{fingerprint=70at6fj60c}]?.json.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/model.json",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "fd9dv6tdem",
+      "Integrity": "TShoOrJheaOl/hrXm/6u86polaPjKvv+MUTdQjDc4x4=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/model.json"
     },
     {
       "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/0g2axbd7dz-4v8eqarkd7.gz",
@@ -3650,6 +3671,27 @@
       "OriginalItemSpec": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map"
     },
     {
+      "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/vkjklxbpvl-suwt0ahe2m.gz",
+      "SourceId": "KareClass",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/",
+      "BasePath": "_content/KareClass",
+      "RelativePath": "js/models/metadata#[.{fingerprint=suwt0ahe2m}]?.json.gz",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Alternative",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/metadata.json",
+      "AssetTraitName": "Content-Encoding",
+      "AssetTraitValue": "gzip",
+      "Fingerprint": "m3imt8115m",
+      "Integrity": "IrJWBo1hmzQmcjyhQQp+6CexMz+V/csi31BXOvwfngE=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/metadata.json"
+    },
+    {
       "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/vltxs1u3vm-xtxxf3hu2r.gz",
       "SourceId": "Microsoft.AspNetCore.Identity.UI",
       "SourceType": "Package",
@@ -4089,6 +4131,69 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/img/avatar.png"
+    },
+    {
+      "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/metadata.json",
+      "SourceId": "KareClass",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/",
+      "BasePath": "_content/KareClass",
+      "RelativePath": "js/models/metadata#[.{fingerprint}]?.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "suwt0ahe2m",
+      "Integrity": "lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/models/metadata.json"
+    },
+    {
+      "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/model.json",
+      "SourceId": "KareClass",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/",
+      "BasePath": "_content/KareClass",
+      "RelativePath": "js/models/model#[.{fingerprint}]?.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "70at6fj60c",
+      "Integrity": "GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/models/model.json"
+    },
+    {
+      "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/weights.bin",
+      "SourceId": "KareClass",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/",
+      "BasePath": "_content/KareClass",
+      "RelativePath": "js/models/weights#[.{fingerprint}]?.bin",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "0y9wgneil1",
+      "Integrity": "WCbieycUPjoDAv9mBVSuL+OyEgdybt9EdNNGrzxkcmM=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/js/models/weights.bin"
     },
     {
       "Identity": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/site.js",
@@ -14653,6 +14758,684 @@
         {
           "Name": "integrity",
           "Value": "sha256-hn+Kxvud0uRQzLWqULcHKV2vbS79YLS8A7CPKJvQ97M="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/metadata.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/vkjklxbpvl-suwt0ahe2m.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.004950495050"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "201"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IrJWBo1hmzQmcjyhQQp+6CexMz+V/csi31BXOvwfngE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:17:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/metadata.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/metadata.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "256"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:17:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/metadata.json.gz",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/vkjklxbpvl-suwt0ahe2m.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "201"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IrJWBo1hmzQmcjyhQQp+6CexMz+V/csi31BXOvwfngE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:17:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-IrJWBo1hmzQmcjyhQQp+6CexMz+V/csi31BXOvwfngE="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/metadata.suwt0ahe2m.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/vkjklxbpvl-suwt0ahe2m.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.004950495050"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "201"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IrJWBo1hmzQmcjyhQQp+6CexMz+V/csi31BXOvwfngE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:17:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "suwt0ahe2m"
+        },
+        {
+          "Name": "label",
+          "Value": "js/models/metadata.json"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/metadata.suwt0ahe2m.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/metadata.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "256"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:17:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "suwt0ahe2m"
+        },
+        {
+          "Name": "label",
+          "Value": "js/models/metadata.json"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-lEPxww2En90ZZzaaGYUFGLQiEZwNlK5JbOmZFUqBcR8="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/metadata.suwt0ahe2m.json.gz",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/vkjklxbpvl-suwt0ahe2m.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "201"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"IrJWBo1hmzQmcjyhQQp+6CexMz+V/csi31BXOvwfngE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:17:48 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "suwt0ahe2m"
+        },
+        {
+          "Name": "label",
+          "Value": "js/models/metadata.json.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-IrJWBo1hmzQmcjyhQQp+6CexMz+V/csi31BXOvwfngE="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/model.70at6fj60c.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/0b2uan4o3u-70at6fj60c.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000239177230"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4180"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TShoOrJheaOl/hrXm/6u86polaPjKvv+MUTdQjDc4x4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "70at6fj60c"
+        },
+        {
+          "Name": "label",
+          "Value": "js/models/model.json"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/model.70at6fj60c.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/model.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "91816"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "70at6fj60c"
+        },
+        {
+          "Name": "label",
+          "Value": "js/models/model.json"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/model.70at6fj60c.json.gz",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/0b2uan4o3u-70at6fj60c.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4180"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TShoOrJheaOl/hrXm/6u86polaPjKvv+MUTdQjDc4x4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "70at6fj60c"
+        },
+        {
+          "Name": "label",
+          "Value": "js/models/model.json.gz"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-TShoOrJheaOl/hrXm/6u86polaPjKvv+MUTdQjDc4x4="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/model.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/0b2uan4o3u-70at6fj60c.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000239177230"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4180"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TShoOrJheaOl/hrXm/6u86polaPjKvv+MUTdQjDc4x4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/model.json",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/model.json",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "91816"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-GRaultLYfOi/DL7bfyb4aPHlqhfr32I05cCQGjWYHac="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/model.json.gz",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/obj/Debug/net9.0/compressed/0b2uan4o3u-70at6fj60c.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "4180"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/json"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"TShoOrJheaOl/hrXm/6u86polaPjKvv+MUTdQjDc4x4=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-TShoOrJheaOl/hrXm/6u86polaPjKvv+MUTdQjDc4x4="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/weights.0y9wgneil1.bin",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/weights.bin",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2154832"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WCbieycUPjoDAv9mBVSuL+OyEgdybt9EdNNGrzxkcmM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "0y9wgneil1"
+        },
+        {
+          "Name": "label",
+          "Value": "js/models/weights.bin"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-WCbieycUPjoDAv9mBVSuL+OyEgdybt9EdNNGrzxkcmM="
+        }
+      ]
+    },
+    {
+      "Route": "js/models/weights.bin",
+      "AssetFile": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/weights.bin",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "2154832"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "application/octet-stream"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"WCbieycUPjoDAv9mBVSuL+OyEgdybt9EdNNGrzxkcmM=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 18 Mar 2025 20:11:32 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-WCbieycUPjoDAv9mBVSuL+OyEgdybt9EdNNGrzxkcmM="
         }
       ]
     },

@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Zaman Dilimleri";
 }
-
+<div class="container">
 <h1>Zaman Dilimleri</h1>
 
 <p>
@@ -13,7 +13,7 @@
 <div class="row">
     @foreach (var item in Model)
     {
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card">
                 <div class="card-header bg-primary text-white">
                     <h5 class="mb-0">@Html.DisplayFor(modelItem => item.DayOfWeek)</h5>
@@ -63,3 +63,4 @@
         Henüz kayıtlı zaman dilimi bulunmamaktadır.
     </div>
 } 
+</div>

@@ -80,6 +80,7 @@ ViewData["Title"] = "Profil";
         let rollCall = [];
         // Load the image model and setup the webcam
         async function init() {
+        
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
 
@@ -140,7 +141,7 @@ ViewData["Title"] = "Profil";
                     if(!rollCall.includes(prediction[i].className)){
                         rollCall.push(prediction[i].className);
                     }
-                    //console.log(prediction[i].className + ": " + prediction[i].probability.toFixed(2));
+                    console.log(prediction[i].className + ": " + prediction[i].probability.toFixed(2));
                     const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2)*100 + "%";
                     labelContainer.childNodes[i].innerHTML = classPrediction;
                 }

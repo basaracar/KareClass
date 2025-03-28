@@ -32,7 +32,7 @@ namespace KareClass.Controllers
                 return RedirectToAction("AccessDenied", "Account");
             }
 
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users.OrderBy(x=>x.UserType).ToListAsync();
             
             // Öğrenci kullanıcıları için sınıf bilgilerini yükle
             foreach (var user in users.Where(u => u.UserType == "Student" && u.ClassId.HasValue))
@@ -167,7 +167,8 @@ namespace KareClass.Controllers
             {
                 user.Department = await _context.Departments.FindAsync(user.DepartmentId);
             }
-
+            var record=_context.AttendanceRecords.Where(x=>x.StudentId==id).ToList();
+            ViewBag.delete=record.Any()?true:false;
             return View(user);
         }
 

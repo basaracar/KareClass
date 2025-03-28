@@ -11,6 +11,8 @@
         <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
             <h4 class="mb-0">Kullanıcı Listesi</h4>
             <a asp-controller="Account" asp-action="Register" class="btn btn-light">Yeni Kullanıcı</a>
+        <button class="btn btn-success" onclick="registerFromModel()">Yüz Tanıma Modelinden Öğrenci Ekle</button>
+     
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -86,3 +88,22 @@
         </div>
     </div>
 </div> 
+@section Scripts{
+    <script>
+        function registerFromModel() {
+            $.ajax({
+                url: "/Classes/RegisterFromModel",
+                type: "GET",
+                success: function (response) {
+                    console.log(response);
+                 if(response.success){
+                     alert("İşlem Başarılı : " + response.message);
+                 }
+                 else{
+                     alert($`Öğrenci eklenirken bir hata oluştu. {reponse.message}`);
+                 }
+                }
+            });
+        }
+    </script>
+}

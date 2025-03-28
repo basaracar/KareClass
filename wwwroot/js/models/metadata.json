@@ -1,1 +1,4 @@
-{"tfjsVersion":"1.7.4","tmVersion":"2.4.10","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2025-03-20T09:10:29.256Z","userMetadata":{},"modelName":"tm-my-image-model","labels":["1055","402","685","898","461","1148"],"imageSize":224}
+{"tfjsVersion":"1.7.4","tmVersion":"2.4.10","packageVersion":"0.8.4-alpha2","packageName":"@teachablemachine/image","timeStamp":"2025-03-28T18:43:46.795Z","userMetadata":{},"modelName":"tm-my-image-model","labels":
+["{\"Nu\":\"666\",\"Firstname\":\"Başar\",\"Surname\":\"Acar\",\"Class\":\"9-A\"}",
+"{\"Nu\":\"667\",\"Firstname\":\"Pepe\",\"Surname\":\"Acar\",\"Class\":\"9-A\"}"
+],"imageSize":224}

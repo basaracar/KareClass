@@ -22,14 +22,14 @@ ViewData["Title"] = "Profil";
             <button type="button" class="btn btn-primary" id="startBtn" value="0">Yoklamayı Başlat</button>
         </div>
         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12" id="rollcall-button">
-         
+
         </div>
         <div class="row mb-4 p-4 justify-content-center">
             <div class="col-md-4 img-fluid p-2" id="webcam-container">
 
             </div>
             <div class="col-md-8 p-2" id="label-container">
-
+                <p></p>
             </div>
         </div>
 
@@ -40,17 +40,16 @@ ViewData["Title"] = "Profil";
     <script
         src='https://cdn.jsdelivr.net/npm/@@teachablemachine/image@latest/dist/teachablemachine-image.min.js'></script>
     <script type="text/javascript">
-        // More API functions here:
+        // Daha fazla API fonksiyonu için:
         // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
-
         // the link to your model provided by Teachable Machine export panel
-        var rollCallBtn=document.createElement("button");
-        rollCallBtn.innerHTML="Yoklama Al";
-        rollCallBtn.className="btn btn-primary";
-        rollCallBtn.onclick=function(){
-            var data={
+        var rollCallBtn = document.createElement("button");
+        rollCallBtn.innerHTML = "Yoklama Al";
+        rollCallBtn.className = "btn btn-primary";
+        rollCallBtn.onclick = function () {
+            var data = {
                 attendanceId: @ViewBag.AttendanceId,
-                rollCall: rollCall
+                rollCall: numbers
             };
             var url = '@Url.Action("TakeRollCall", "Profile")';
             fetch(url, {
@@ -60,66 +59,63 @@ ViewData["Title"] = "Profil";
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    document.location="@Url.Action("Index", "Profile")";
-                } else {
-                    alert("Yoklama alınamadı."+data.message);
-                }
-            })
-            .catch(error => {
-                alert("Bir hata oluştu.");
-            });
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.location = "@Url.Action("Index", "Profile")";
+                    } else {
+                        alert("Yoklama alınamadı." + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert("Bir hata oluştu.");
+                });
         };
 
 
         const URL = "../../js/models/";
-
         let model, webcam, labelContainer, maxPredictions;
         let rollCall = [];
-        // Load the image model and setup the webcam
+        let numbers = [];
+        // Öğrenci numaralarını ve isimlerini almak için
+        // Görüntü modelini yükle ve web kamerasını ayarla
         async function init() {
-        
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
-
-            // load the model and metadata
-            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-            // or files from your local hard drive
-            // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+            // model ve metadata'yı yükle
+            // Dosya seçiciden veya yerel sabit sürücünüzden dosyaları desteklemek için 
+            // API'deki tmImage.loadFromFiles()'a bakın
+            // Not: pose kütüphanesi pencerenize "tmImage" nesnesini ekler (window.tmImage)
             model = await tmImage.load(modelURL, metadataURL);
             maxPredictions = model.getTotalClasses();
-
-            // Convenience function to setup a webcam
-            const flip = true; // whether to flip the webcam
-            webcam = new tmImage.Webcam(300, 300, flip); // width, height, flip
-            await webcam.setup(); // request access to the webcam
+            // Web kamerasını ayarlamak için kolaylık fonksiyonu
+            const flip = true; // web kamerasını çevir
+            webcam = new tmImage.Webcam(300, 300, flip); // genişlik, yükseklik, çevirme
+            await webcam.setup(); // web kamerası erişimi iste
             await webcam.play();
             window.requestAnimationFrame(loop);
             //Buttonu gizle
-            document.getElementById("startBtn").value="1"
-            document.getElementById("startBtn").innerHTML="Durdur";
-            // append elements to the DOM
+            document.getElementById("startBtn").value = "1"
+            document.getElementById("startBtn").innerHTML = "Durdur";
+            // DOM'a elementleri ekle
             document.getElementById("webcam-container").appendChild(webcam.canvas);
             labelContainer = document.getElementById("label-container");
-            for (let i = 0; i < maxPredictions; i++) { // and class labels
+            for (let i = 0; i < maxPredictions; i++) { // ve sınıf etiketleri
                 labelContainer.appendChild(document.createElement("div"));
             }
             document.getElementById("rollcall-button").appendChild(rollCallBtn);
-
         }
-        document.getElementById("startBtn").onclick = function() {
-            if(document.getElementById("startBtn").value=="0"){
-                document.getElementById("startBtn").className="btn btn-danger";
+        document.getElementById("startBtn").onclick = function () {
+            if (document.getElementById("startBtn").value == "0") {
+                document.getElementById("startBtn").className = "btn btn-danger";
                 init();
-            }else{
+            } else {
                 console.log(rollCall);
                 webcam.stop();
-                document.getElementById("startBtn").className="btn btn-primary";
+                document.getElementById("startBtn").className = "btn btn-primary";
                 document.getElementById("webcam-container").removeChild(webcam.canvas);
-                document.getElementById("startBtn").value="0";
-                document.getElementById("startBtn").innerHTML="Yoklamayı Başlat";
+                document.getElementById("startBtn").value = "0";
+                document.getElementById("startBtn").innerHTML = "Yoklamayı Başlat";
             }
         }
 
@@ -131,24 +127,40 @@ ViewData["Title"] = "Profil";
             window.requestAnimationFrame(loop);
         }
 
-        // run the webcam image through the image model
+        // Web kamerası görüntüsünü görüntü modelinden geçir
         async function predict() {
-            // predict can take in an image, video or canvas html element
+            // tahmin bir resim, video veya canvas html elementi alabilir
             const prediction = await model.predict(webcam.canvas);
-            
-            for (let i = 0; i < maxPredictions; i++) {
-                if (prediction[i].probability.toFixed(2) > 0.6) {
-                    if(!rollCall.includes(prediction[i].className)){
-                        rollCall.push(prediction[i].className);
-                    }
-                    console.log(prediction[i].className + ": " + prediction[i].probability.toFixed(2));
-                    const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2)*100 + "%";
-                    labelContainer.childNodes[i].innerHTML = classPrediction;
-                }
 
+            for (let i = 0; i < maxPredictions; i++) {
+                // en yüksek olasılığa sahip etiketi bul
+                // ve etiketi ve tahmin olasılığını göster
+                if (prediction[i].probability.toFixed(2) > 0.6) {
+                    if (!rollCall.includes(prediction[i].className)) {
+                        rollCall.push(prediction[i].className);
+                        showPredictions(rollCall);
+                    }
+                }
             }
         }
-      
+
+        function showPredictions(predictions) {
+            // Etiket konteynerını temizle
+            labelContainer.innerHTML = "";
+            numbers = [];
+            const classPrediction = document.createElement("ol");
+            // Tahminleri göster
+            predictions.forEach((prediction) => {
+                let studentData = JSON.parse(prediction);
+                // Öğrenci numarasını listeye ekle
+                numbers.push(studentData.Nu);
+
+                const studentLine = "<li>" + studentData.Nu + " - " + studentData.Firstname + " " + studentData.Surname + "</li>";
+                classPrediction.innerHTML += studentLine;
+            });
+            labelContainer.appendChild(classPrediction);
+            // console.log(numbers);
+        }
 
     </script>
     }

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using KareClass.Models;
 using Microsoft.AspNetCore.Identity;
+using KareClass.Utils;
 
 namespace KareClass.Data;
 
@@ -183,27 +184,10 @@ public async Task SeedTimeSlots()
             await SaveChangesAsync();
         }
     }
-private static string RemoveTurkishCharacters(string input)
-{
-    var replacements = new Dictionary<char, string>
-    {
-        { 'ı', "i" }, { 'ş', "s" }, { 'ğ', "g" }, { 'ü', "u" }, { 'ç', "c" }, { 'ö', "o" },
-        { 'İ', "I" }, { 'Ş', "S" }, { 'Ğ', "G" }, { 'Ü', "U" }, { 'Ç', "C" }, { 'Ö', "O" }
-    };
-
-    foreach (var replacement in replacements)
-    {
-        input = input.Replace(replacement.Key.ToString(), replacement.Value);
-    }
-    return input;
-}
     public async Task SeedAdminUser(UserManager<ApplicationUser> userManager)
     {
         // Bölümlerin oluşturulduğundan emin olalım
-        await SeedDepartments();
-        
-       
-        
+        await SeedDepartments();        
         // Admin kullanıcısı oluştur
         var adminEmail = "admin@kareclass.com";
         var adminUser = await userManager.FindByEmailAsync(adminEmail);
@@ -289,10 +273,10 @@ var teachers = new List<(string FirstName, string LastName)>
 foreach (var teacher in teachers)
 {
     // E-posta adresini oluştur (örneğin: ahmet.yilmaz@kareclass.com)
-    var teacherEmail =  RemoveTurkishCharacters($"{teacher.FirstName.ToLower()}.{teacher.LastName.ToLower()}@kareclass.com");
+    var teacherEmail =  Helper.RemoveTurkishCharacters($"{teacher.FirstName.ToLower()}.{teacher.LastName.ToLower()}@kareclass.com");
 
     // Kullanıcı adını oluştur (özel karakterler olmadan, örneğin: ahmetyilmaz)
-    var teacherUserName = RemoveTurkishCharacters($"{teacher.FirstName.ToLower()}{teacher.LastName.ToLower()}".Replace(".", "").Replace("@", "").Replace(" ", ""));
+    var teacherUserName = Helper.RemoveTurkishCharacters($"{teacher.FirstName.ToLower()}{teacher.LastName.ToLower()}".Replace(".", "").Replace("@", "").Replace(" ", ""));
     // Kullanıcıyı kontrol et
     var teacherUser = await userManager.FindByEmailAsync(teacherEmail);
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
+using KareClass.Utils;
 
 namespace KareClass.Controllers;
 
@@ -55,7 +56,7 @@ public class ClassesController : Controller
     public class ModelStudent
     {
         [JsonPropertyName("Nu")]
-        public string Nu { get; set; }
+        public string Nu { get; set; } 
 
         [JsonPropertyName("Firstname")]
         public string Firstname { get; set; }
@@ -66,20 +67,7 @@ public class ClassesController : Controller
         [JsonPropertyName("Class")]
         public string Class { get; set; }
     }
-    private static string RemoveTurkishCharacters(string input)
-    {
-        var replacements = new Dictionary<char, string>
-    {
-        { 'ı', "i" }, { 'ş', "s" }, { 'ğ', "g" }, { 'ü', "u" }, { 'ç', "c" }, { 'ö', "o" },
-        { 'İ', "I" }, { 'Ş', "S" }, { 'Ğ', "G" }, { 'Ü', "U" }, { 'Ç', "C" }, { 'Ö', "O" }
-    };
-
-        foreach (var replacement in replacements)
-        {
-            input = input.Replace(replacement.Key.ToString(), replacement.Value);
-        }
-        return input;
-    }
+    
     // RegisterFromModel metodunu güncelle
     public async Task<IActionResult> RegisterFromModel()
     {
@@ -88,65 +76,58 @@ public class ClassesController : Controller
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(),
                 "wwwroot", "js", "models", "metadata.json");
-
             if (!System.IO.File.Exists(path))
             {
                 return Json(new { success = false, message = "Metadata dosyası bulunamadı" });
             }
-
-            
-                string jsonContent = await System.IO.File.ReadAllTextAsync(path);
-                
-                var options = new JsonSerializerOptions {
-                    PropertyNameCaseInsensitive = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                    ReadCommentHandling = JsonCommentHandling.Skip,
-                    AllowTrailingCommas = true,
-                    NumberHandling = JsonNumberHandling.AllowReadingFromString
-                };
-
-                var metadata = JsonSerializer.Deserialize<MetadataModel>(jsonContent, options);
-           
-
+            string jsonContent = await System.IO.File.ReadAllTextAsync(path);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                ReadCommentHandling = JsonCommentHandling.Skip,
+                AllowTrailingCommas = true,
+                NumberHandling = JsonNumberHandling.AllowReadingFromString
+            };
+            var metadata = JsonSerializer.Deserialize<MetadataModel>(jsonContent, options);
             if (metadata?.labels == null || metadata.labels.Length == 0)
             {
                 return Json(new { success = false, message = "Metadata içinde öğrenci bilgisi bulunamadı" });
             }
             // Öğrenci bilgilerini işleme
             var students = metadata.labels.Select(label => JsonSerializer.Deserialize<ModelStudent>(label)).ToList();
-
             foreach (var student in students)
             {
                 if (student != null)
                 {
                     var classId = await _context.Classes.FirstOrDefaultAsync(c => c.ClassName == student.Class);
                     // E-posta adresini oluştur (örneğin: ahmet.yilmaz@kareclass.com)
-                    var studentEmail = RemoveTurkishCharacters($"{student.Firstname.ToLower()}.{student.Surname.ToLower()}@kareclass.com");
-
+                    var studentEmail =  Helper.RemoveTurkishCharacters($"{student.Firstname.ToLower()}.{student.Surname.ToLower()}@kareclass.com");
                     // Kullanıcı adını oluştur (özel karakterler olmadan, örneğin: ahmetyilmaz)
-                    var studentUserName = RemoveTurkishCharacters($"{student.Firstname.ToLower()}{student.Surname.ToLower()}".Replace(".", "").Replace("@", "").Replace(" ", ""));
+                    var studentUserName = Helper.RemoveTurkishCharacters($"{student.Firstname.ToLower()}{student.Surname.ToLower()}".Replace(".", "").Replace("@", "").Replace(" ", ""));
                     // Kullanıcıyı kontrol et
                     var studentUser = await _userManager.FindByEmailAsync(studentEmail);
-                    var number=_context.Users.FirstOrDefault(x=>x.SchoolNumber==student.Nu);
-                    if(number!=null){
+                    var number = _context.Users.FirstOrDefault(x => x.SchoolNumber == student.Nu);
+                    if (number != null)
+                    {
                         message += $"Öğrenci kullanıcısı zaten var: {studentUser.UserName}\n";
                     }
                     else
                     if (studentUser == null)
                     {
                         studentUser = new ApplicationUser();
-                        
-                            studentUser.UserName = studentEmail;
-                            studentUser.Email = studentEmail;
-                            studentUser.FirstName = student.Firstname;
-                            studentUser.LastName = student.Surname;
-                            studentUser.UserType = "Student";
-                            studentUser.SchoolNumber = student.Nu;
-                            studentUser.DepartmentId = 1;
-                            studentUser.ClassId = classId.ClassId;
-                            studentUser.EmailConfirmed = true;
-                        
+
+                        studentUser.UserName = studentEmail;
+                        studentUser.Email = studentEmail;
+                        studentUser.FirstName = student.Firstname;
+                        studentUser.LastName = student.Surname;
+                        studentUser.UserType = "Student";
+                        studentUser.SchoolNumber = student.Nu;
+                        studentUser.DepartmentId = 1;
+                        studentUser.ClassId = classId.ClassId;
+                        studentUser.EmailConfirmed = true;
+
                         var result = await _userManager.CreateAsync(studentUser, "Student123!");
                         if (!result.Succeeded)
                         {
@@ -157,33 +138,37 @@ public class ClassesController : Controller
                                             $"Ad: {student.Firstname}, " +
                                             $"Soyad: {student.Surname}, " +
                                             $"Sınıf: {student.Class}");
-                    }else{
+                    }
+                    else
+                    {
                         message += $"Öğrenci kullanıcısı zaten var: {studentUser.UserName}\n";
                     }
-                
+
 
 
 
                 }
             }
 
-            
-        }
-        
-            catch (JsonException ex) {
-                message=$"JSON deserialization error: {ex.Message}";
-                // Handle JSON error
-            }
-            catch (Exception ex) {
-                message=$"Unexpected error: {ex.Message}"; 
-                // Handle other errors
-            }
-            return Json(new
-            {
-                success = true,
-                message = message,
 
-            });
+        }
+
+        catch (JsonException ex)
+        {
+            message = $"JSON deserialization error: {ex.Message}";
+            // Handle JSON error
+        }
+        catch (Exception ex)
+        {
+            message = $"Unexpected error: {ex.Message}";
+            // Handle other errors
+        }
+        return Json(new
+        {
+            success = true,
+            message = message,
+
+        });
     }
 
     public async Task<IActionResult> Details(int? id)

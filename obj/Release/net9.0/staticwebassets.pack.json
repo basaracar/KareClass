@@ -17,6 +17,18 @@
       "PackagePath": "staticwebassets/img/avatar.png"
     },
     {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/metadata.json",
+      "PackagePath": "staticwebassets/js/models/metadata.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/model.json",
+      "PackagePath": "staticwebassets/js/models/model.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/weights.bin",
+      "PackagePath": "staticwebassets/js/models/weights.bin"
+    },
+    {
       "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },
@@ -259,6 +271,10 @@
     {
       "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/lib/jquery/dist/jquery.slim.min.map",
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.slim.min.map"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/wwwr.zip",
+      "PackagePath": "staticwebassets/wwwr.zip"
     },
     {
       "Id": "obj/Release/net9.0/staticwebassets/msbuild.KareClass.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

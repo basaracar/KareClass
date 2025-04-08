@@ -238,6 +238,8 @@
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/yfc7ypekbg-mlv21k5csn.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/2vvzwh30s1-b9sayid5wm.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/fr9oi1to6f-61n19gt1b8.gz
+/home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/vkjklxbpvl-7lktw99peo.gz
+/home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/0b2uan4o3u-48n3v2zoeb.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/8l12vbd31s-xtxxf3hu2r.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/3cjcnqojke-bqjiyaj88i.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/t5zqds3fm4-c2jlpeoesf.gz

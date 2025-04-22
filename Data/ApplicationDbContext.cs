@@ -20,6 +20,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Department> Departments { get; set; }
     public DbSet<Attendance> Attendances { get; set; }
     public DbSet<AttendanceRecord> AttendanceRecords { get; set; }
+    public DbSet<FaceModel> FaceModels { get; set; } // Yüz model verileri için DbSet
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

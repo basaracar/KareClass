@@ -1,0 +1,50 @@
+@model KareClass.Models.ApplicationUser
+@{
+ViewData["Title"] = "Yüz Tanıma";
+}
+
+<script src="../js/faceApi/face-api.js"></script>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>Yüz Kaydı Sayfası</h2>
+            <p>Yüzünüzü kaydetmek için kamerayı açın ve yüzünüzü ekranda görünür hale getirin.</p>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div style="position: relative" class="m-5">
+                <video id="videoElement" width="640" height="480" autoplay></video>
+                <canvas id="overlay" />
+            </div>
+        </div>
+
+
+        <div class="col-md-5">
+            <form class="row g-3">
+
+                <div class="col-auto">
+                    <label for="inputPassword2" class="visually-hidden">Öğrenci Numara</label>
+                    <input type="text" id="isim" class="form-control" id="inputPassword2" placeholder="Numarayı girin"
+                        required>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-primary mb-3" onclick="yuzKaydet()">Yüz Bilgilerini Kaydet</button>
+  </div>
+</form>
+
+
+        </div>
+
+        
+   
+</div>
+
+
+</div>
+
+<script src=" ../js/faceApi/app.js"></script>

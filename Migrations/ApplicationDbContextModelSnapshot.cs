@@ -242,6 +242,25 @@ namespace KareClass.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("KareClass.Models.FaceModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descriptor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FaceModels");
+                });
+
             modelBuilder.Entity("KareClass.Models.Schedule", b =>
                 {
                     b.Property<int>("ScheduleId")

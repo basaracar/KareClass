@@ -188,7 +188,7 @@
                                             <i class="fas fa-clipboard-list"></i> Yoklama Al
                                         </button></div>
                                         <div class="col">
-                                        <a asp-action="RollCall" asp-controller="Profile" asp-route-id="@ViewBag.CurrentLesson.ScheduleId" class="btn btn-success" >
+                                        <a asp-action="FaceDetect" asp-controller="Face" asp-route-id="@ViewBag.CurrentLesson.ScheduleId" class="btn btn-success" >
                                             <i class="fas fa-clipboard-list"></i>Yüz Tanıma İle Yoklama Al
                                         </a></div>
                                         }else if(ViewBag.CurrentLesson.IsActive==1){
@@ -200,7 +200,7 @@
                                             <i class="fas fa-clipboard-list"></i> QrCode Göster
                                         </button></div>
                                         <div class="col">
-                                        <a asp-action="RollCall" asp-controller="Profile" asp-route-id="@ViewBag.CurrentLesson.ScheduleId" class="btn btn-success" >
+                                        <a asp-action="FaceDetect" asp-controller="Face" asp-route-id="@ViewBag.CurrentLesson.ScheduleId" class="btn btn-success" >
                                             <i class="fas fa-clipboard-list"></i>Yüz Tanıma İle Yoklama Al
                                         </a></div>
                                         }else{

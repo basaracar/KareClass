@@ -1,0 +1,203 @@
+@{
+    ViewData["Title"] = "Yüz Tanıma";
+}
+<div class="container">
+    @if(ViewBag.Error!= null)
+    {
+    <div class="row mb-4">
+        <div class="col-12 alert alert-danger">
+            @ViewBag.Error
+        </div>
+    </div>
+    }
+    <div class="row mb-4">
+        <div class="col">@ViewBag.TeacherName</div>
+        <div class="col">@ViewBag.ClassName Sınıfı</div>
+        <div class="col">@ViewBag.CourseName Dersi</div>
+        <div class="col">@ViewBag.StartTime - @ViewBag.EndTime</div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-12">
+
+            <button type="button" class="btn btn-primary" id="startBtn" value="0" style="display: none;">Yoklamayı Tamamla</button>
+        </div>
+       
+
+        </div>
+
+        <div class="row mb-4 p-4">
+            <div class="col-md-7 img-fluid p-2" id="webcam-container">
+                 <div  style="position: relative">
+                <video id="video" width="640" height="480" autoplay></video>
+            <canvas id="overlay" />
+            </div>
+            </div>
+            
+
+            
+            <div class="col-md-5 p-2" id="result">
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+@section Scripts {
+   <script src="../../js/faceApi/face-api.js"></script>
+    <script>
+        let video;
+        let canvas;
+        let dbFaceDescriptors = [];
+        let studentList = [];
+      
+        document.getElementById('startBtn').addEventListener('click', function () {
+            var data = {
+                attendanceId: @ViewBag.AttendanceId,
+                rollCall: studentList
+            };
+            var url = '@Url.Action("TakeRollCall", "Profile")';
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.location = "@Url.Action("Index", "Profile")";
+                    } else {
+                        alert("Yoklama alınamadı." + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert("Bir hata oluştu.");
+                });
+        });
+        // Sayfa yüklendiğinde çalışacak fonksiyon
+        $(document).ready(async function () {
+            video = document.getElementById('video');
+            canvas = document.getElementById('overlay');
+
+            // Face-api modellerini yükle
+   // const modelPath = 'https://justadudewhohacks.github.io/face-api.js/models/';
+        const modelPath='/js/faceApi/models/';
+    
+            await Promise.all([
+                faceapi.nets.ssdMobilenetv1.loadFromUri(modelPath),
+                faceapi.nets.faceLandmark68Net.loadFromUri(modelPath),
+                faceapi.nets.faceRecognitionNet.loadFromUri(modelPath)
+            ]);
+
+            // Veritabanındaki yüz tanımlayıcılarını al
+            await loadDbFaceDescriptors();
+
+            // Kamerayı başlat
+            startVideo();
+        });
+
+        // Veritabanından yüz tanımlayıcılarını alan fonksiyon
+    async function loadDbFaceDescriptors() {
+    const response = await fetch('/api/Face/GetAllFaces');
+    const faces = await response.json();
+   // console.log(faces);
+    faces.forEach(face => {
+        // Descriptor string'ini önce array'e çevirelim
+        const descriptorArray = face.descriptor.split(',').map(Number);
+        
+        dbFaceDescriptors.push({
+            name: face.name,
+            descriptor: new Float32Array(descriptorArray)
+        });
+    });
+    console.log(dbFaceDescriptors);
+} 
+
+        // Kamera erişimini başlatan fonksiyon
+        async function startVideo() {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+
+            // Canvas boyutlarını video boyutlarıyla eşleştir
+            canvas.width = video.width;
+            canvas.height = video.height;
+
+            video.addEventListener('play', () => {
+                setInterval(async () => {
+                    const detections = await faceapi.detectAllFaces(video)
+                        .withFaceLandmarks()
+                        .withFaceDescriptors();
+                        
+                    const context = canvas.getContext('2d');
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+
+                    detections.forEach(detection => {
+                        const match = findBestMatch(detection.descriptor);
+                        // Benzerlik yüzdesini hesapla (1 - mesafe) * 100
+                        const similarity = ((1 - match.distance) * 100).toFixed(2);
+                        // Etiketi benzerlik yüzdesiyle birlikte göster
+                        
+                        if(similarity>50){
+                        if(studentList.length==0){
+                        document.getElementById('startBtn').style.display = "block";
+                                                    }
+                        if(!studentList.includes(match.label)){
+                            // Eğer öğrenci listesinde yoksa ekle
+                            studentList.push(match.label);
+                            //debugger;
+                            fetch('/Face/GetStudentDetail', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({SchoolNumber: match.label })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                                if (data.status === 'OK') {
+                                    document.getElementById('result').innerHTML += `
+                                            <div>
+                                                <p class="card-title">${data.className} ${data.schoolNumber} ${data.data}   </p>
+                                            </div>
+                                        `;
+                                }
+                            });
+                        }
+                        // Eğer benzerlik %50'den fazlaysa, yüzü tanımlamak için bir kutu çizin
+                        const label = `${match.label} (${similarity}%)`;
+                        const drawBox = new faceapi.draw.DrawBox(detection.detection.box, {
+                            label: label,
+                            lineWidth: 2,
+                            boxColor: 'blue',
+                            drawLabelOptions: {
+                                fontSize: 16,
+                                fontStyle: 'bold',
+                                padding: 5
+                            }
+                        });
+                        drawBox.draw(canvas);
+                        }
+                    });
+                }, 100);
+            });
+        }
+
+        // En iyi eşleşmeyi bulan fonksiyon
+        function findBestMatch(descriptor) {
+            let bestMatch = { label: 'Bilinmeyen', distance: 1.0 };
+            
+            dbFaceDescriptors.forEach(dbFace => {
+                const distance = faceapi.euclideanDistance(descriptor, dbFace.descriptor);
+                if (distance < bestMatch.distance) {
+                    bestMatch = { label: dbFace.name, distance: distance };
+                }
+            });
+
+            return bestMatch;
+        }
+    </script>
+}

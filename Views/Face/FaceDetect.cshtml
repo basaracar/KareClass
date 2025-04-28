@@ -109,8 +109,8 @@
 
     const faces = @Html.Raw(faceData);
    
-    console.log(faces.value);
-    faces.forEach(face => {
+    //console.log(faces.value);
+    faces.value.forEach(face => {
         // Descriptor string'ini önce array'e çevirelim
         const descriptorArray = face.descriptor.split(',').map(Number);
         
@@ -119,7 +119,7 @@
             descriptor: new Float32Array(descriptorArray)
         });
     });
-    console.log(dbFaceDescriptors);
+    //console.log(dbFaceDescriptors);
 } 
 
         // Kamera erişimini başlatan fonksiyon

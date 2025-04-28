@@ -205,6 +205,10 @@
                                         </a></div>
                                         }else{
                                         <p class="text-succes">Yoklama Sonlanmış</p>
+                                        <div class="col">
+                                        <button type="button" class="btn btn-danger" onclick="removeAttendance(@ViewBag.CurrentLesson.AttendanceId)">
+                                            <i class="fas fa-clipboard-list"></i> Yoklamayı Sil
+                                        </button></div>
                                         }
 
                                         <!-- QR Kod Modal -->
@@ -373,7 +377,7 @@
             console.log("attendanceId:"+attendanceId);
             // Katılımcıları getir ve her 5 saniyede bir güncelle
             getParticipants(attendanceId);
-            participantsInterval = setInterval(() => getParticipants(attendanceId), 5000);
+            participantsInterval = setInterval(() => getParticipants(attendanceId), 10000);
         }
 
         function getParticipants(attendanceId) {
@@ -405,7 +409,28 @@
                     console.error('Katılımcılar getirilemedi:', error);
                 });
         }
-
+        function removeAttendance(attendanceId) {
+            fetch('/Attendance/RemoveAttendance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `attendanceId=${attendanceId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                    console.log("Yoklama silindi");
+                } else {
+                    alert('Yoklama silinemedi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+                alert('Yoklama silinemedi');
+            });
+        }
         function stopAttendance(attendanceId) {
             if (participantsInterval) {
                 clearInterval(participantsInterval);
@@ -422,7 +447,7 @@
             .then(data => {
                 if (data.success) {
                  location.reload();
-                   console.log("Yoklama sonlandırıldı");
+                console.log("Yoklama sonlandırıldı");
                 } else {
                     alert('Yoklama sonlandırılamadı: ' + data.message);
                 }

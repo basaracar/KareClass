@@ -158,7 +158,32 @@ namespace KareClass.Controllers
                 return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> RemoveAttendance(int attendanceId)
+        {
+            try
+            {
+                var attendance = await _context.Attendances.FindAsync(attendanceId);
+                if (attendance == null)
+                {
+                    return Json(new { success = false, message = "Yoklama bulunamadı." });
+                }
 
+                var records = await _context.AttendanceRecords
+                    .Where(ar => ar.AttendanceId == attendanceId)
+                    .ToListAsync();
+
+                _context.AttendanceRecords.RemoveRange(records);
+                _context.Attendances.Remove(attendance);
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Yoklama başarıyla silindi." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Yoklama silinirken hata oluştu: {ex.Message}" });
+            }
+        }
         [HttpGet]
         [Route("Attendance/GetParticipants/{attendanceId}")]
         public async Task<IActionResult> GetParticipants(int attendanceId)

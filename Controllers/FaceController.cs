@@ -139,7 +139,8 @@ namespace KareClass.Controllers
             Console.WriteLine($"Class: {schedule.Class?.ClassName ?? "null"}");
             Console.WriteLine($"TimeSlot: {schedule.TimeSlot?.StartTime.ToString() ?? "null"} - {schedule.TimeSlot?.EndTime.ToString() ?? "null"}");
 
-
+  var faces = await _context.FaceModels.ToListAsync();
+            ViewBag.FaceData= Json(faces);
             ViewBag.ClassName = schedule.Class.ClassName;
             ViewBag.CourseName = schedule.Course.CourseName;
             ViewBag.StartTime = schedule.TimeSlot.StartTime.ToString(@"hh\:mm");
@@ -165,6 +166,7 @@ namespace KareClass.Controllers
                 await _context.SaveChangesAsync();
             }
             ViewBag.AttendanceId = attendance.AttendanceId;
+           
             return View();
         }
 

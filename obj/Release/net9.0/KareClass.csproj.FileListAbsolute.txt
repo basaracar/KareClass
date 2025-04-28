@@ -318,7 +318,6 @@
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/ref/KareClass.dll
 /home/basar/Belgeler/DotNetProjects/KareClass/bin/Release/net9.0/appsettings.example.json
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/2vvzwh30s1-9ousp2ws3s.gz
-/home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/781xswg9h6-q4pm9lpvio.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/0g2m1wqtxq-del1klwl5e.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/ujtmdh5gu4-chbo7js3pi.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/b7h618fjt8-h3ekaip6oe.gz
@@ -330,3 +329,4 @@
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/lm391hplum-kkut9g8o6r.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/i9dprdqwxg-d6svvbd63j.gz
 /home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/0evn8arkj5-w1hjdnoavs.gz
+/home/basar/Belgeler/DotNetProjects/KareClass/obj/Release/net9.0/compressed/781xswg9h6-soht3gl4v6.gz

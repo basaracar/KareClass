@@ -41,7 +41,9 @@
 
 
     </div>
-
+@{
+ var faceData = Json.Serialize(ViewBag.FaceData);
+}
 
 
 @section Scripts {
@@ -101,9 +103,13 @@
 
         // Veritabanından yüz tanımlayıcılarını alan fonksiyon
     async function loadDbFaceDescriptors() {
-    const response = await fetch('/api/Face/GetAllFaces');
-    const faces = await response.json();
-   // console.log(faces);
+    // Veritabanından yüz tanımlayıcılarını al
+    //const response = await fetch('/api/Face/GetAllFaces');
+    //const faces = await response.json();
+
+    const faces = @Html.Raw(faceData);
+   
+    console.log(faces.value);
     faces.forEach(face => {
         // Descriptor string'ini önce array'e çevirelim
         const descriptorArray = face.descriptor.split(',').map(Number);

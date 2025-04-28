@@ -66,8 +66,8 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>q4pm9lpvio</Fingerprint>
-      <Integrity>upWK2AptD7RS+gjbew07Q5e169RkuvFhVZR03N9XIv8=</Integrity>
+      <Fingerprint>soht3gl4v6</Fingerprint>
+      <Integrity>NI6HfHZPQqS8zS1Ux48V5JcBwO+XTI/fJFY+oHb7qqY=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\js\faceApi\app.js'))</OriginalItemSpec>

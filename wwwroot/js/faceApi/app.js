@@ -91,7 +91,7 @@ async function init() {
                 ctx.strokeRect(box.x, box.y, box.width, box.height);
             });
         }
-    }, 100); // Her 100ms'de bir güncelle
+    }, 200); // Her 100ms'de bir güncelle
 }
 
 // ...existing code...

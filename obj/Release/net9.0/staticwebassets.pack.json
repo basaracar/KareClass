@@ -17,6 +17,94 @@
       "PackagePath": "staticwebassets/img/avatar.png"
     },
     {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/app.js",
+      "PackagePath": "staticwebassets/js/faceApi/app.js"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/face-api.js",
+      "PackagePath": "staticwebassets/js/faceApi/face-api.js"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/face-api.js.map",
+      "PackagePath": "staticwebassets/js/faceApi/face-api.js.map"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/face-api.min.js",
+      "PackagePath": "staticwebassets/js/faceApi/face-api.min.js"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/age_gender_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/age_gender_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/age_gender_model-weights_manifest.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_expression_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_expression_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/face_expression_model-weights_manifest.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_landmark_68_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_landmark_68_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/face_landmark_68_model-weights_manifest.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_landmark_68_tiny_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_landmark_68_tiny_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/face_landmark_68_tiny_model-weights_manifest.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_recognition_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_recognition_model-shard2",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/face_recognition_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/face_recognition_model-weights_manifest.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/mtcnn_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/mtcnn_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/mtcnn_model-weights_manifest.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/ssd_mobilenetv1_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/ssd_mobilenetv1_model-shard2",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/ssd_mobilenetv1_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/ssd_mobilenetv1_model-weights_manifest.json"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/tiny_face_detector_model-shard1",
+      "PackagePath": "staticwebassets/js/faceApi/models"
+    },
+    {
+      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/faceApi/models/tiny_face_detector_model-weights_manifest.json",
+      "PackagePath": "staticwebassets/js/faceApi/models/tiny_face_detector_model-weights_manifest.json"
+    },
+    {
       "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/js/models/metadata.json",
       "PackagePath": "staticwebassets/js/models/metadata.json"
     },
@@ -271,10 +359,6 @@
     {
       "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/lib/jquery/dist/jquery.slim.min.map",
       "PackagePath": "staticwebassets/lib/jquery/dist/jquery.slim.min.map"
-    },
-    {
-      "Id": "/home/basar/Belgeler/DotNetProjects/KareClass/wwwroot/wwwr.zip",
-      "PackagePath": "staticwebassets/wwwr.zip"
     },
     {
       "Id": "obj/Release/net9.0/staticwebassets/msbuild.KareClass.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",

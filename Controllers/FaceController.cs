@@ -58,13 +58,19 @@ namespace KareClass.Controllers
 
             try
             {
+                var existingFace = await _context.FaceModels
+                    .FirstOrDefaultAsync(f => f.Name.Equals(faceModel.Name));
+                if (existingFace != null){
+                    return Ok(new {message="Bu numara ile bir yüz zaten mevcut"});
+                }
+
                 _context.FaceModels.Add(faceModel);
                 await _context.SaveChangesAsync();
-                return Ok(new { message = $"{faceModel.Name} isimli kişinin yüz bilgileri başarıyla kaydedildi!" });
+                return Ok(new { message = $"{faceModel.Name} numaralı kişinin yüz bilgileri başarıyla kaydedildi!" });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Yüz kaydetme hatası");
+                _logger.LogError(ex.Message, "Yüz kaydetme hatası");
                 return StatusCode(500, "Yüz kaydedilirken bir hata oluştu");
             }
         }

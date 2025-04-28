@@ -16,14 +16,6 @@ ViewData["Title"] = "Yüz Tanıma";
         </div>
     </div>
     <div class="row">
-        <div class="col-md-7">
-            <div style="position: relative" class="m-5">
-                <video id="videoElement" width="640" height="480" autoplay></video>
-                <canvas id="overlay" />
-            </div>
-        </div>
-
-
         <div class="col-md-5">
             <form class="row g-3">
 
@@ -35,10 +27,20 @@ ViewData["Title"] = "Yüz Tanıma";
                 <div class="col-auto">
                     <button type="button" class="btn btn-primary mb-3" onclick="yuzKaydet()">Yüz Bilgilerini Kaydet</button>
   </div>
+ 
 </form>
-
+ </div>
 
         </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div style="position: relative">
+                <video id="videoElement" width="640" height="480" autoplay></video>
+                <canvas id="overlay" />
+            </div>
+        </div>
+
+</div>
 
         
    
